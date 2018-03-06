@@ -4,7 +4,7 @@
       <img id="logo" class="logo" src="~@/assets/logo.png" alt="electron-vue">
     </v-flex>
     <v-flex xs12 md6 class="text-xs-center centered">
-      <img id="logo" class="logo" src="/static/v.png" alt="Vuetifyjs">
+      <img id="logo" class="logo" src="~@/assets/v.png" alt="Vuetifyjs">
     </v-flex>
     <v-flex xs10 class="mt-3">
       <v-card>
