@@ -1,113 +1,82 @@
 <template>
-  <div id="app">
-    <v-app dark>
-      <v-navigation-drawer
-        fixed
-        :mini-variant="miniVariant"
-        :clipped="clipped"
-        v-model="drawer"
-        app
-      >
-        <v-list>
-          <v-list-tile
-            router
-            :to="item.to"
-            :key="i"
-            v-for="(item, i) in items"
-            exact
-          >
+<div id="app">
+  <v-app :dark="dark">
+    <v-toolbar fixed clipped-left app>
+      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-title>Vue Calc</v-toolbar-title>
+    </v-toolbar>
+    <v-navigation-drawer fixed clipped app v-model="drawer">
+      <v-list two-line>
+        <template v-for="(item, index) in items">
+          <v-subheader v-if="item.header" :key="item.header">{{ item.header }}</v-subheader>
+          <v-divider v-else-if="item.divider" :inset="item.inset" :key="index"></v-divider>
+          <v-list-tile v-else :key="item.title" @click="">
             <v-list-tile-action>
-              <v-icon v-html="item.icon"></v-icon>
+              <v-icon>{{ item.icon }}</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
-              <v-list-tile-title v-text="item.title"></v-list-tile-title>
+              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+              <v-list-tile-sub-title>{{ item.subtitle }}</v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
-        </v-list>
-      </v-navigation-drawer>
-      <v-toolbar fixed app :clipped-left="clipped">
-        <v-toolbar-side-icon @click.native.stop="drawer = !drawer"></v-toolbar-side-icon>
-        <v-btn
-          icon
-          @click.native.stop="miniVariant = !miniVariant"
-        >
-          <v-icon v-html="miniVariant ? 'chevron_right' : 'chevron_left'"></v-icon>
-        </v-btn>
-        <v-btn
-          icon
-          @click.native.stop="clipped = !clipped"
-        >
-          <v-icon>web</v-icon>
-        </v-btn>
-        <v-btn
-          icon
-          @click.native.stop="fixed = !fixed"
-        >
-          <v-icon>remove</v-icon>
-        </v-btn>
-        <v-toolbar-title v-text="title"></v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-btn
-          icon
-          @click.native.stop="rightDrawer = !rightDrawer"
-        >
-          <v-icon>menu</v-icon>
-        </v-btn>
-      </v-toolbar>
-      <v-content>
-        <v-container fluid fill-height>
-          <v-slide-y-transition mode="out-in">
-            <router-view></router-view>
-          </v-slide-y-transition>
-        </v-container>
-      </v-content>
-      <v-navigation-drawer
-        temporary
-        fixed
-        :right="right"
-        v-model="rightDrawer"
-        app
-      >
-        <v-list>
-          <v-list-tile @click.native="right = !right">
-            <v-list-tile-action>
-              <v-icon light>compare_arrows</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-title>Switch drawer (click me)</v-list-tile-title>
-          </v-list-tile>
-        </v-list>
-      </v-navigation-drawer>
-      <v-footer :fixed="fixed" app>
-        <v-spacer></v-spacer>
-        <span>&copy; 2017</span>
-      </v-footer>
-    </v-app>
-  </div>
+        </template>
+      </v-list>
+    </v-navigation-drawer>
+    <!-- <router-view></router-view> -->
+    <v-divider></v-divider>
+    <v-footer class="pa-3" app>
+      <div>versione 0.0.1</div>
+      <v-spacer></v-spacer>
+      <div>&copy; {{ new Date().getFullYear() }}</div>
+    </v-footer>
+
+  </v-app>
+</div>
 </template>
 
 <script>
-  export default {
-    name: 'vue-calc',
-    data: () => ({
-      clipped: false,
-      drawer: true,
-      fixed: false,
+export default {
+  name: 'vue-calc',
+  data () {
+    return {
+      dark: false,
+      drawer: false,
       items: [
-        { icon: 'apps', title: 'Welcome', to: '/' },
-        { icon: 'bubble_chart', title: 'Inspire', to: '/inspire' }
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js'
-    })
+        // {
+        //   header: 'Formato'
+        // },
+        { title: 'Standard',
+          subtitle: 'Operazioni fondamentali',
+          icon: 'mdi-calculator'
+        },
+        { title: 'Scientifica',
+          subtitle: 'Funzioni avanzate',
+          icon: 'mdi-laptop'
+        },
+        { title: 'Date',
+          subtitle: 'Calcola la distanza tra due date',
+          icon: 'mdi-calendar-range'
+        },
+        {
+          divider: true
+        },
+        {
+          title: 'Impostazioni',
+          subtitle: 'Scegli il tema',
+          icon: 'mdi-settings'
+        }
+      ]
+    }
   }
+}
 </script>
 
 <style>
-  /* @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'); */
-  /* @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700'); */
-  @import url('~@/assets/fonts/fontRoboto.css');
-  @import url('~@/assets/fonts/materialIcons.css');
-  /* Global CSS */
+/* @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'); */
+
+/* @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700'); */
+
+@import url('~@/assets/fonts/fontRoboto.css');
+@import url('~@/assets/fonts/materialIcons.css');
+/* Global CSS */
 </style>

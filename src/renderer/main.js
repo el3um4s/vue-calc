@@ -2,6 +2,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.css'
+import 'mdi/css/materialdesignicons.min.css'
 
 import App from './App'
 import router from './router'
