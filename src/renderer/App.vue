@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app">
+  <v-app>
     <appNavigationDrawer></appNavigationDrawer>
     <appToolbar></appToolbar>
     <v-content >
@@ -34,4 +34,7 @@ export default {
 @import url('~@/assets/fonts/fontRoboto.css');
 @import url('~@/assets/fonts/materialIcons.css');
 /* Global CSS */
+html {
+  overflow-y: hidden;
+}
 </style>

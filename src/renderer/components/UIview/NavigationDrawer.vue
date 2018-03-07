@@ -24,43 +24,10 @@
 import { mapGetters, mapMutations } from 'vuex'
 
 export default {
-  data () {
-    return {
-      hideOverlay: false,
-      items: [
-        // {
-        //   header: 'Formato'
-        // },
-        { title: 'Standard',
-          subtitle: 'Operazioni fondamentali',
-          icon: 'mdi-calculator',
-          to: 'simple'
-        },
-        { title: 'Scientifica',
-          subtitle: 'Funzioni avanzate',
-          icon: 'mdi-laptop',
-          to: 'advanced'
-        },
-        { title: 'Date',
-          subtitle: 'Calcola la distanza tra due date',
-          icon: 'mdi-calendar-range',
-          to: 'date'
-        },
-        {
-          divider: true
-        },
-        {
-          title: 'Impostazioni',
-          subtitle: 'Scegli il tema',
-          icon: 'mdi-settings',
-          to: 'settings'
-        }
-      ]
-    }
-  },
   computed: {
     ...mapGetters({
-      drawerVisible: 'drawerVisible'
+      drawerVisible: 'drawerVisible',
+      items: 'menuItems'
     })
   },
   methods: {
