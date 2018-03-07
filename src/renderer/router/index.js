@@ -7,17 +7,32 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'welcome-view',
-      component: require('@/components/WelcomeView').default
-    },
-    {
-      path: '/inspire',
-      name: 'inspire',
-      component: require('@/components/InspireView').default
+      name: 'home',
+      component: require('@/components/CalcStandardView').default
     },
     {
       path: '*',
       redirect: '/'
+    },
+    {
+      path: '/simple',
+      name: 'simple',
+      component: require('@/components/CalcStandardView').default
+    },
+    {
+      path: '/advanced',
+      name: 'advanced',
+      component: require('@/components/CalcAdvancedView').default
+    },
+    {
+      path: '/date',
+      name: 'date',
+      component: require('@/components/CalcDateView').default
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: require('@/components/SettingsView').default
     }
   ]
 })
