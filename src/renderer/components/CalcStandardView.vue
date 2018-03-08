@@ -7,14 +7,14 @@
 </template>
 
 <script>
-import CalcStandardDisplay from './CalcStandard/CalcStandardDisplay.vue'
-import CalcStandardMemory from './CalcStandard/CalcStandardMemory.vue'
-import CalcStandardInput from './CalcStandard/CalcStandardInput.vue'
+import CalcDisplay from './CalcGeneral/CalcDisplay.vue'
+import CalcMemory from './CalcGeneral/CalcMemory.vue'
+import CalcStandardInput from './CalcInput/CalcStandardInput.vue'
 
 export default {
   components: {
-    appDisplay: CalcStandardDisplay,
-    appMemory: CalcStandardMemory,
+    appDisplay: CalcDisplay,
+    appMemory: CalcMemory,
     appInput: CalcStandardInput
   }
 }

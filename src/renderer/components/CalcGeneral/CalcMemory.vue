@@ -1,6 +1,5 @@
 <template>
   <div>
-    <p>memory</p>
   </div>
 </template>
 
@@ -13,6 +12,6 @@ export default {
 div {
   /* width: 100%; */
   max-height: 5%;
-  background-color: blue;
+  /* background-color: blue; */
 }
 </style>

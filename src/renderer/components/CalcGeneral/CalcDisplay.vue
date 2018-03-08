@@ -1,6 +1,5 @@
 <template>
   <div>
-    <p>display</p>
   </div>
 </template>
 
@@ -13,6 +12,6 @@ export default {
 div {
   /* width: 100%; */
   max-height: 25%;
-  background-color: green;
+  /* background-color: green; */
 }
 </style>
