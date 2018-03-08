@@ -1,6 +1,7 @@
 <template>
   <!-- <v-navigation-drawer app fixed clipped v-model="drawer"> -->
-  <v-navigation-drawer app clipped :permanent="drawerVisible" :hide-overlay="drawerVisible" :value="drawerVisible">
+  <!-- :hide-overlay="drawerVisible"  -->
+  <v-navigation-drawer app disable-resize-watcher clipped :permanent="drawerVisible" hide-overlay :value="drawerVisible">
     <v-list two-line>
       <template v-for="(item, index) in items">
         <v-subheader v-if="item.header" :key="item.header">{{ item.header }}</v-subheader>
@@ -25,13 +26,13 @@ import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   computed: {
-    ...mapGetters({
+    ...mapGetters('menu', {
       drawerVisible: 'drawerVisible',
       items: 'menuItems'
     })
   },
   methods: {
-    ...mapMutations({
+    ...mapMutations('menu', {
       drawerToggle: 'drawerToggle'
     })
   }

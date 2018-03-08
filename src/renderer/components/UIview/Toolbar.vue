@@ -18,7 +18,7 @@ import { mapMutations } from 'vuex'
 
 export default {
   methods: {
-    ...mapMutations({
+    ...mapMutations('menu', {
       drawerToggle: 'drawerToggle'
     })
     // prova () {

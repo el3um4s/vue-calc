@@ -13,7 +13,7 @@ import {
 
 export default {
   computed: {
-    ...mapGetters({
+    ...mapGetters('menu', {
       versionNumber: 'versionNumber'
     })
   }

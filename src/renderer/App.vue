@@ -2,12 +2,10 @@
   <v-app>
     <appNavigationDrawer></appNavigationDrawer>
     <appToolbar></appToolbar>
-    <v-content >
-        <v-container fluid fill-height>
-          <v-fade-transition mode="out-in">
+    <v-content fill-height>
+        <v-fade-transition mode="out-in">
             <router-view></router-view>
           </v-fade-transition>
-        </v-container>
     </v-content>
     <appFooter></appFooter>
   </v-app>
