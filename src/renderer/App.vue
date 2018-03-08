@@ -29,8 +29,9 @@ export default {
 <style>
 /* @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'); */
 /* @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700'); */
-@import url('~@/assets/fonts/fontRoboto.css');
-@import url('~@/assets/fonts/materialIcons.css');
+@import url('~@/assets/fonts/font-roboto/fontRoboto.css');
+@import url('~@/assets/fonts/icons-material-icons/materialIcons.css');
+@import url('~@/assets/fonts/icon-flaticon/flaticon.css');
 /* Global CSS */
 html {
   overflow-y: hidden;

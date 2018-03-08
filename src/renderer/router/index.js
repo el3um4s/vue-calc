@@ -7,17 +7,16 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: require('@/components/CalcStandardView').default
-    },
-    {
-      path: '*',
-      redirect: '/'
+      redirect: '/simple'
     },
     {
       path: '/simple',
       name: 'simple',
       component: require('@/components/CalcStandardView').default
+    },
+    {
+      path: '*',
+      redirect: '/simple'
     },
     {
       path: '/advanced',

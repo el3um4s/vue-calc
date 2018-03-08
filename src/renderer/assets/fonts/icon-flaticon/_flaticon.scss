@@ -1,0 +1,61 @@
+    /*
+    Flaticon icon font: Flaticon
+    Creation date: 08/03/2018 20:16
+    */
+
+    @font-face {
+  font-family: "Flaticon";
+  src: url("./Flaticon.eot");
+  src: url("./Flaticon.eot?#iefix") format("embedded-opentype"),
+       url("./Flaticon.woff") format("woff"),
+       url("./Flaticon.ttf") format("truetype"),
+       url("./Flaticon.svg#Flaticon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Flaticon";
+    src: url("./Flaticon.svg#Flaticon") format("svg");
+  }
+}
+
+    .fi:before{
+        display: inline-block;
+  font-family: "Flaticon";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-decoration: inherit;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+    }
+
+    .flaticon-backspace-arrow:before { content: "\f100"; }
+.flaticon-square:before { content: "\f101"; }
+.flaticon-sign-2:before { content: "\f102"; }
+.flaticon-sign-1:before { content: "\f103"; }
+.flaticon-sign:before { content: "\f104"; }
+.flaticon-technology:before { content: "\f105"; }
+.flaticon-mathematical-basic-signs-of-plus-and-minus-with-a-slash:before { content: "\f106"; }
+.flaticon-minus-sign:before { content: "\f107"; }
+.flaticon-plus-positive-add-mathematical-symbol:before { content: "\f108"; }
+.flaticon-divide-mathematical-sign:before { content: "\f109"; }
+.flaticon-percent-sign:before { content: "\f10a"; }
+    
+    $font-Flaticon-backspace-arrow: "\f100";
+    $font-Flaticon-square: "\f101";
+    $font-Flaticon-sign-2: "\f102";
+    $font-Flaticon-sign-1: "\f103";
+    $font-Flaticon-sign: "\f104";
+    $font-Flaticon-technology: "\f105";
+    $font-Flaticon-mathematical-basic-signs-of-plus-and-minus-with-a-slash: "\f106";
+    $font-Flaticon-minus-sign: "\f107";
+    $font-Flaticon-plus-positive-add-mathematical-symbol: "\f108";
+    $font-Flaticon-divide-mathematical-sign: "\f109";
+    $font-Flaticon-percent-sign: "\f10a";

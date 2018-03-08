@@ -2,26 +2,28 @@ class Btn {
   constructor (obj) {
     this.key = obj.key
     this.label = obj.label
+    this.icon = obj.icon
   }
 
   get dati () {
     return {
       key: this.key,
-      label: this.label
+      label: this.label,
+      icon: this.icon
     }
   }
 }
 
-const BTN_0 = new Btn({key: 'N0', label: 0})
-const BTN_1 = new Btn({key: 'N1', label: 1})
-const BTN_2 = new Btn({key: 'N2', label: 2})
-const BTN_3 = new Btn({key: 'N3', label: 3})
-const BTN_4 = new Btn({key: 'N4', label: 4})
-const BTN_5 = new Btn({key: 'N5', label: 5})
-const BTN_6 = new Btn({key: 'N6', label: 6})
-const BTN_7 = new Btn({key: 'N7', label: 7})
-const BTN_8 = new Btn({key: 'N8', label: 8})
-const BTN_9 = new Btn({key: 'N9', label: 9})
+const BTN_0 = new Btn({key: 'N0', label: 0, icon: 'mdi-numeric-0-box-outline'})
+const BTN_1 = new Btn({key: 'N1', label: 1, icon: 'mdi-numeric-1-box-outline'})
+const BTN_2 = new Btn({key: 'N2', label: 2, icon: 'mdi-numeric-2-box-outline'})
+const BTN_3 = new Btn({key: 'N3', label: 3, icon: 'mdi-numeric-3-box-outline'})
+const BTN_4 = new Btn({key: 'N4', label: 4, icon: 'mdi-numeric-4-box-outline'})
+const BTN_5 = new Btn({key: 'N5', label: 5, icon: 'mdi-numeric-5-box-outline'})
+const BTN_6 = new Btn({key: 'N6', label: 6, icon: 'mdi-numeric-6-box-outline'})
+const BTN_7 = new Btn({key: 'N7', label: 7, icon: 'mdi-numeric-7-box-outline'})
+const BTN_8 = new Btn({key: 'N8', label: 8, icon: 'mdi-numeric-8-box-outline'})
+const BTN_9 = new Btn({key: 'N9', label: 9, icon: 'mdi-numeric-9-box-outline'})
 
 const BTN_DIVIDE = new Btn({key: 'DIVIDE', label: '÷'})
 const BTN_MOLT = new Btn({key: 'MOLT', label: 'X'})
