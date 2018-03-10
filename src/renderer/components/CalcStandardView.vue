@@ -1,20 +1,17 @@
 <template>
     <div>
       <app-display></app-display>
-      <app-memory></app-memory>
       <app-input></app-input>
     </div>
 </template>
 
 <script>
-import CalcDisplay from './CalcGeneral/CalcDisplay.vue'
-import CalcMemory from './CalcGeneral/CalcMemory.vue'
+import CalcDisplay from './CalcDisplay/CalcDisplay.vue'
 import CalcStandardInput from './CalcInput/CalcStandardInput.vue'
 
 export default {
   components: {
     appDisplay: CalcDisplay,
-    appMemory: CalcMemory,
     appInput: CalcStandardInput
   }
 }

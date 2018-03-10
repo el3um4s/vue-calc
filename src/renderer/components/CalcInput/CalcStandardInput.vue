@@ -4,7 +4,8 @@
       <v-flex xs3 v-for="riga in righe" :key="`btn-${riga.key}`">
         <v-flex d-flex fill-height>
             <v-btn class="buttonFull">
-                {{ riga.label }}
+                <v-icon v-if="riga.icon">{{ riga.icon }}</v-icon>
+                <div v-else>{{ riga.label }}</div>
             </v-btn>
         </v-flex>
       </v-flex>

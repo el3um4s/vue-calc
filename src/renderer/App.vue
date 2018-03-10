@@ -1,7 +1,6 @@
 <template>
   <v-app>
-    <appNavigationDrawer></appNavigationDrawer>
-    <appToolbar></appToolbar>
+    <appToolbarENavigation></appToolbarENavigation>
     <v-content fill-height>
         <v-fade-transition mode="out-in">
             <router-view></router-view>
@@ -12,15 +11,15 @@
 </template>
 
 <script>
-import NavigationDrawer from './components/UIview/NavigationDrawer.vue'
-import Toolbar from './components/UIview/Toolbar.vue'
+// import NavigationDrawer from './components/UIview/NavigationDrawer.vue'
+// import Toolbar from './components/UIview/Toolbar.vue'
+import ToolbarENavigation from './components/UIview/ToolbarENavigation.vue'
 import Footer from './components/UIview/Footer.vue'
 
 export default {
   name: 'vue-calc',
   components: {
-    appNavigationDrawer: NavigationDrawer,
-    appToolbar: Toolbar,
+    appToolbarENavigation: ToolbarENavigation,
     appFooter: Footer
   }
 }
