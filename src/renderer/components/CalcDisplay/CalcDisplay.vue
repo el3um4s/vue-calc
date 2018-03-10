@@ -1,18 +1,22 @@
 <template>
   <div class="display">
-    <div class="valoriInseriti">
-      <p>1</p>
-      <p>2</p>
-      <p>3</p>
-      <p>4</p>
-      <p>5</p>
-    </div>
-    <div class="risultatoInGrande">9.999.999.999.999.999</div>
+    <div class="valoriInseriti"></div>
+    {{ getInput }}
+    <div class="risultatoInGrande">{{ getRisultato }}</div>
+    <!-- <div class="risultatoInGrande">9.999.999.999.999.999</div> -->
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
+  computed: {
+    ...mapGetters('calculus', {
+      getRisultato: 'getRisultato',
+      getInput: 'getInput'
+    })
+  }
 }
 </script>
 

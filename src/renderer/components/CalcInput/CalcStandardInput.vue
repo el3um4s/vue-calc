@@ -3,7 +3,7 @@
     <v-flex d-flex v-for="(righe, i) in buttons" :key="`riga0${i}`">
       <v-flex xs3 v-for="riga in righe" :key="`btn-${riga.key}`">
         <v-flex d-flex fill-height>
-            <v-btn class="buttonFull">
+            <v-btn class="buttonFull" @click.stop="addInput({ value: riga.value, symbol: riga.symbol })">
                 <v-icon v-if="riga.icon">{{ riga.icon }}</v-icon>
                 <div v-else>{{ riga.label }}</div>
             </v-btn>
@@ -14,14 +14,17 @@
 </template>
 
 <script>
-import {
-  mapGetters
-} from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   computed: {
     ...mapGetters('calcInput', {
       buttons: 'listButtonsStandard'
+    })
+  },
+  methods: {
+    ...mapMutations('calculus', {
+      addInput: 'addInput'
     })
   }
 }
