@@ -2,20 +2,26 @@
 import {Decimal} from 'decimal.js'
 
 const state = {
-  risultato: 0,
+  formatNumber: 'it',
+  risultato: 999999999999999,
   input: [],
   inputText: ''
 }
 
 const getters = {
   getRisultato () {
-    return state.risultato
+    // const x = new Decimal(state.risultato)
+    // return x.toString()
+    return state.risultato.toLocaleString(state.formatNumber)
   },
   getInput () {
     return state.input
   },
   getInputText () {
-    return state.inputText
+    const inputText = state.input.map(function (item) {
+      return item['symbol']
+    })
+    return inputText.join()
   }
 }
 
@@ -28,8 +34,16 @@ const mutations = {
     // state.risultato = state.risultato + 1
   },
   addInput (state, payload) {
-    state.inputText += payload.symbol
-    state.input.push(payload)
+    const lengthInput = state.input.length
+
+    if (lengthInput === 0 && payload.type === 'number') {
+      state.input.push(payload)
+    } else {
+      if (payload.type === 'number' && state.input[lengthInput - 1].type === 'number') {
+        state.input[lengthInput - 1].value += payload.value
+        state.input[lengthInput - 1].symbol += payload.symbol
+      }
+    }
   }
 }
 

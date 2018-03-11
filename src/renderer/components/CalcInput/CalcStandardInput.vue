@@ -3,7 +3,7 @@
     <v-flex d-flex v-for="(righe, i) in buttons" :key="`riga0${i}`">
       <v-flex xs3 v-for="riga in righe" :key="`btn-${riga.key}`">
         <v-flex d-flex fill-height>
-            <v-btn class="buttonFull" @click.stop="addInput({ value: riga.value, symbol: riga.symbol })">
+            <v-btn class="buttonFull" @click.stop="addInput({ value: riga.value, symbol: riga.symbol, type: riga.type })">
                 <v-icon v-if="riga.icon">{{ riga.icon }}</v-icon>
                 <div v-else>{{ riga.label }}</div>
             </v-btn>
@@ -34,7 +34,7 @@ export default {
 .griglia {
   max-width: 100%;
   /* height: 70%; */
-  max-height: 70%;
+  max-height: 60%;
 }
 .inputButton {
   border-style: solid;
