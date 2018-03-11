@@ -1,7 +1,17 @@
 <template>
   <div class="display">
-    <div class="valoriInseriti"></div>
-    {{ getInput }}
+    <v-text-field
+      rows="4"
+      readonly
+      no-resize
+      multi-line
+      textarea
+      flat
+      full-width
+      :value="getInputText"
+      class="valoriInseriti"
+      ></v-text-field>
+    <!-- {{ getInputText }} -->
     <div class="risultatoInGrande">{{ getRisultato }}</div>
     <!-- <div class="risultatoInGrande">9.999.999.999.999.999</div> -->
   </div>
@@ -14,7 +24,7 @@ export default {
   computed: {
     ...mapGetters('calculus', {
       getRisultato: 'getRisultato',
-      getInput: 'getInput'
+      getInputText: 'getInputText'
     })
   }
 }
@@ -36,12 +46,13 @@ export default {
   text-align: right;
   font-weight: bold;
   font-size: 4vh;
-
 }
+
 .valoriInseriti {
-  background-color: yellow;
   max-height: 72%;
 }
+
+
 div {
   /* width: 100%; */
   /* max-height: 30%; */

@@ -4,6 +4,11 @@ class Btn {
     this.label = obj.label
     this.icon = obj.icon
     this.value = obj.value
+    if (obj.symbol) {
+      this.symbol = obj.symbol
+    } else {
+      this.symbol = obj.label
+    }
   }
 
   get dati () {
@@ -28,7 +33,7 @@ const BTN_8 = new Btn({key: 'N8', label: 8, value: '8'})
 const BTN_9 = new Btn({key: 'N9', label: 9, value: '9'})
 
 const BTN_DIVIDE = new Btn({key: 'DIVIDE', label: '÷', icon: 'mdi-division', value: 'DIVIDE'})
-const BTN_MOLT = new Btn({key: 'MOLT', label: 'X', icon: 'mdi-multiplication', value: 'MOLTIPLICA'})
+const BTN_MOLT = new Btn({key: 'MOLT', label: '*', icon: 'mdi-multiplication', value: 'MOLTIPLICA'})
 const BTN_MINUS = new Btn({key: 'MINUS', label: '-', value: 'SOTTRAE'})
 const BTN_PLUS = new Btn({key: 'PLUS', label: '+', icon: 'mdi-plus', value: 'SOMMA'})
 const BTN_SIGN = new Btn({key: 'SIGN', label: '±', value: 'INVERTI'})
@@ -37,11 +42,11 @@ const BTN_RESULT = new Btn({key: 'RESULT', label: '=', icon: 'mdi-equal', value:
 
 const BTN_OP_PERC = new Btn({key: 'OP_PERC', label: '%', icon: 'mdi-percent', value: 'PERCENTUALE'})
 const BTN_OP_SQUARE = new Btn({key: 'OP_SQUARE', label: '√', icon: 'mdi-square-root', value: 'RADICE'})
-const BTN_OP_POT = new Btn({key: 'OP_POT', label: 'x²', icon: 'mdi-format-superscript', value: 'ELEVA'})
+const BTN_OP_POT = new Btn({key: 'OP_POT', label: 'x²', icon: 'mdi-format-superscript', value: 'ELEVA', symbol: '²'})
 const BTN_OP_1DIV = new Btn({key: 'OP_1DIV', label: '⅟', value: '1DIV'})
 const BTN_OP_CE = new Btn({key: 'OP_CE', label: 'CE', value: 'CANCELLAULTIMO'})
 const BTN_OP_C = new Btn({key: 'OP_C', label: 'C', value: 'CANCELLATUTTO'})
-const BTN_OP_DEL = new Btn({key: 'OP_DEL', label: '<-', icon: 'mdi-backspace', value: 'CANCELLAULTIMOCARATTERE'})
+const BTN_OP_DEL = new Btn({key: 'OP_DEL', label: '<-', icon: 'mdi-backspace', value: 'CANCELLAULTIMOCARATTERE', symbol: 'D'})
 
 const state = {
   calcStandard: [

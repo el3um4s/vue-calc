@@ -3,7 +3,8 @@ import {Decimal} from 'decimal.js'
 
 const state = {
   risultato: 0,
-  input: []
+  input: [],
+  inputText: ''
 }
 
 const getters = {
@@ -12,6 +13,9 @@ const getters = {
   },
   getInput () {
     return state.input
+  },
+  getInputText () {
+    return state.inputText
   }
 }
 
@@ -24,6 +28,7 @@ const mutations = {
     // state.risultato = state.risultato + 1
   },
   addInput (state, payload) {
+    state.inputText += payload.symbol
     state.input.push(payload)
   }
 }
