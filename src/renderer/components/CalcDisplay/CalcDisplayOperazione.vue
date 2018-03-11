@@ -12,12 +12,9 @@ export default {
     }
   },
   mounted () {
-    console.log('mounted')
-    console.log(this.$el.offsetTop)
     this.top = this.$el.offsetTop
   },
   updated () {
-    console.log('before')
     this.top = this.$el.offsetTop
   }
 }
