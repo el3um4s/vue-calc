@@ -44,7 +44,7 @@ const BTN_MOLT = new Btn({key: 'MOLT', label: '*', icon: 'mdi-multiplication', v
 const BTN_MINUS = new Btn({key: 'MINUS', label: '-', value: 'sub', type: OPERATOR})
 const BTN_PLUS = new Btn({key: 'PLUS', label: '+', icon: 'mdi-plus', value: 'add', type: OPERATOR})
 const BTN_OP_PERC = new Btn({key: 'OP_PERC', label: '%', icon: 'mdi-percent', value: 'PERCENTUALE', type: MODIFICATORE})
-const BTN_OP_SQUARE = new Btn({key: 'OP_SQUARE', label: '√', icon: 'mdi-square-root', value: 'RADICE', type: MODIFICATORE})
+const BTN_OP_SQUARE = new Btn({key: 'OP_SQUARE', label: '√', icon: 'mdi-square-root', value: 'sqrt', type: MODIFICATORE})
 const BTN_OP_POT = new Btn({key: 'OP_POT', label: 'x²', icon: 'mdi-format-superscript', value: 'ELEVA', symbol: '²', type: MODIFICATORE})
 const BTN_OP_1DIV = new Btn({key: 'OP_1DIV', label: '⅟', value: '1DIV', type: MODIFICATORE})
 

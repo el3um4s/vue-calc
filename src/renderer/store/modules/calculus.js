@@ -14,56 +14,34 @@ const state = {
   result: new Decimal(0),
   input: [],
   inputText: '',
+  listOperation: [],
   lastOperator: null
 }
 
-function setNumbers () {
-  const lengthInput = state.input.length
-  state.firstNumber = null
-  state.secondNumber = null
-
-  switch (lengthInput) {
-    case 0:
-      break
-    case 1:
-      state.firstNumber = new Decimal(state.input[0].value)
-      break
-    case 2:
-      state.firstNumber = new Decimal(state.input[0].value)
-      break
-    default:
-      state.firstNumber = new Decimal(state.input[lengthInput - 3].value)
-      state.secondNumber = new Decimal(state.input[lengthInput - 1].value)
-  }
-}
-
-function setResult () {
-  if (state.firstNumber) {
-    state.result = state.firstNumber
-  }
-  if (state.firstNumber && state.lastOperator && state.secondNumber) {
-    switch (state.lastOperator) {
-      case 'add':
-        state.result = state.firstNumber.add(state.secondNumber)
-        break
-      case 'sub':
-        state.result = state.firstNumber.sub(state.secondNumber)
-        break
-      case 'mul':
-        state.result = state.firstNumber.mul(state.secondNumber)
-        break
-      case 'div':
-        state.result = state.firstNumber.mul(state.secondNumber)
-        break
+function calcola (elements) {
+  if (elements.length === 0) return
+  let decimal = null
+  for (let i = 0; i < elements.length; i++) {
+    const value = elements[i].value
+    const type = elements[i].type
+    if (i === 0 && type === NUMBER) {
+      decimal = new Decimal(value)
+    } else if (i < elements.length - 1) {
+      if (type === OPERATOR) {
+        decimal = decimal[value](elements[i + 1].value)
+        i += 1
+      }
     }
   }
+  console.log(decimal)
+  state.result = decimal
 }
 
 const getters = {
   getRisultato () {
-    // const x = new Decimal(state.result)
-    // return x.toString()
-    return state.result.toLocaleString(state.formatNumber)
+    // const x = state.result.d[0] * state.result.s
+    return state.result.toNumber()
+    // return x.toLocaleString(state.formatNumber)
   },
   getInput () {
     return state.input
@@ -73,6 +51,9 @@ const getters = {
       return item['symbol']
     })
     return inputText.join(' ')
+  },
+  getListOperation () {
+    return state.listOperation
   }
 }
 
@@ -90,12 +71,10 @@ const mutations = {
     switch (true) {
       case lengthInput === 0 && type === NUMBER:
         state.input.push(payload)
-        setNumbers()
         break
       case type === NUMBER && typePrec === NUMBER:
         state.input[inputPrec].value += value
         state.input[inputPrec].symbol += symbol
-        setNumbers()
         break
       case type === OPERATOR && typePrec === NUMBER:
         state.input.push(payload)
@@ -108,21 +87,24 @@ const mutations = {
         break
       case type === NUMBER && typePrec === OPERATOR:
         state.input.push(payload)
-        setNumbers()
         break
       case type === EQUAL && typePrec === OPERATOR:
         state.input.pop()
         state.input.push(payload)
-        setNumbers()
+        calcola(state.input)
+        state.listOperation.unshift(getters.getInputText() + ' ' + getters.getRisultato())
+        state.input = []
         break
       case type === EQUAL && typePrec === NUMBER:
         state.input.push(payload)
-        setNumbers()
+        calcola(state.input)
+        state.listOperation.unshift(getters.getInputText() + ' ' + getters.getRisultato())
+        state.input = []
         break
       default:
         break
     }
-    // setResult()
+    calcola(state.input)
   }
 }
 

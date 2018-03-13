@@ -2,6 +2,7 @@
   <div class="display">
       <v-layout column reverse class="elenco">
         <appOperazione>{{ getInputText }}</appOperazione>
+        <appOperazione v-for="item in getListOperation">{{ item }}</appOperazione>
       </v-layout>
   </div>
 </template>
@@ -16,7 +17,8 @@ export default {
   },
   computed: {
     ...mapGetters('calculus', {
-      getInputText: 'getInputText'
+      getInputText: 'getInputText',
+      getListOperation: 'getListOperation'
     })
   }
 }
