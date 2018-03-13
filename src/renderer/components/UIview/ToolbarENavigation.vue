@@ -9,7 +9,7 @@
       <template v-for="(item, index) in items">
         <v-subheader v-if="item.header" :key="item.header">{{ item.header }}</v-subheader>
         <v-divider v-else-if="item.divider" :inset="item.inset" :key="index"></v-divider>
-        <v-list-tile v-else :key="item.title" router :to="item.to" @click.stop="">
+        <v-list-tile v-else :key="item.title" router :to="item.to" @click.stop="drawer = !drawer">
           <v-list-tile-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>

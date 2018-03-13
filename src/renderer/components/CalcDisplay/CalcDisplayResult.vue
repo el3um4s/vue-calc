@@ -1,5 +1,6 @@
 <template>
   <div>
+    <v-divider></v-divider>
     <v-flex>{{ getRisultato }}</v-flex>
   </div>
 </template>
@@ -18,9 +19,10 @@ export default {
 
 <style scoped>
 div {
-  height: 18%;
-  max-height: 18%;
-  padding: 1%;
+  font-family: 'Mina', sans-serif;
+  height: 6%;
+  max-height: 6%;
+  padding: 1px;
   text-align: right;
   font-weight: bold;
   font-size: 4vh;

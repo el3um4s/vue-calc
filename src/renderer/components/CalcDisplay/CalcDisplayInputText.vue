@@ -2,7 +2,7 @@
   <div class="display">
       <v-layout column reverse class="elenco">
         <appOperazione>{{ getInputText }}</appOperazione>
-        <appOperazione v-for="item in getListOperation">{{ item }}</appOperazione>
+        <appOperazione v-for="(item, index) in getListOperation" :key="index">{{ item }}</appOperazione>
       </v-layout>
   </div>
 </template>
@@ -27,8 +27,9 @@ export default {
 <style scoped>
 
 .display {
-  height: 80%;
-  max-height: 80%;
+  font-family: 'Mina', sans-serif;
+  height: 34%;
+  max-height: 34%;
 }
 
 .elenco {

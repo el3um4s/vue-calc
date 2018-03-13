@@ -10,11 +10,6 @@ const state = {
       icon: 'mdi-calculator',
       to: 'simple'
     },
-    { title: 'Scientifica',
-      subtitle: 'Funzioni avanzate',
-      icon: 'mdi-laptop',
-      to: 'advanced'
-    },
     { title: 'Date',
       subtitle: 'Calcola la distanza tra due date',
       icon: 'mdi-calendar-range',

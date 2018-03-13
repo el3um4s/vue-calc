@@ -40,7 +40,7 @@ function calcola (elements) {
 const getters = {
   getRisultato () {
     // const x = state.result.d[0] * state.result.s
-    return state.result.toNumber()
+    return state.result.toNumber().toLocaleString(state.formatNumber)
     // return x.toLocaleString(state.formatNumber)
   },
   getInput () {
@@ -48,7 +48,12 @@ const getters = {
   },
   getInputText () {
     const inputText = state.input.map(function (item) {
-      return item['symbol']
+      if (item.type === NUMBER) {
+        const x = new Decimal(item.symbol)
+        return x.toNumber().toLocaleString(state.formatNumber)
+      }
+      return item.symbol
+      // return item['symbol']
     })
     return inputText.join(' ')
   },

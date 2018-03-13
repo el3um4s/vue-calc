@@ -33,30 +33,15 @@ export default {
 <style scoped>
 .griglia {
   max-width: 100%;
-  /* height: 70%; */
   max-height: 60%;
-}
-.inputButton {
-  border-style: solid;
-  border-color: black;
-  border-width: thin;
-}
-
-.buttonContainer {
-  position: relative;
 }
 
 .buttonFull {
   margin: 0px;
   width: 100%;
   height: 100%;
-  /* font-weight: bold; */
   font-family: 'Mina', sans-serif;
   font-size: 4vh;
 }
-
-/* .full {
-  font-size: 15vh;
-} */
 
 </style>
