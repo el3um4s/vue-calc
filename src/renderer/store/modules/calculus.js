@@ -13,9 +13,14 @@ const state = {
   secondNumber: null,
   result: new Decimal(0),
   input: [],
+  inputDec: [],
   inputText: '',
   listOperation: [],
   lastOperator: null
+}
+
+function formatoNumero (x) {
+  return x.toNumber().toLocaleString(state.formatNumber)
 }
 
 function calcola (elements) {
@@ -37,6 +42,28 @@ function calcola (elements) {
   state.result = decimal
 }
 
+function aggiungiInput (input) {
+  if (input.type === NUMBER) {
+    const x = new Decimal(input.value)
+    x.type = NUMBER
+    x.symbol = formatoNumero(x)
+    state.inputDec.push(x)
+  } else {
+    state.inputDec.push(input)
+  }
+}
+
+function aggiungiCifra (x, addX) {
+  const newX = new Decimal(x.toString() + addX)
+  newX.type = NUMBER
+  newX.symbol = formatoNumero(newX)
+  return newX
+}
+
+function eliminaUltimoInputIntero () {
+  state.inputDec.pop()
+}
+
 const getters = {
   getRisultato () {
     // const x = state.result.d[0] * state.result.s
@@ -49,11 +76,10 @@ const getters = {
   getInputText () {
     const inputText = state.input.map(function (item) {
       if (item.type === NUMBER) {
-        const x = new Decimal(item.symbol)
+        const x = new Decimal(item.value)
         return x.toNumber().toLocaleString(state.formatNumber)
       }
       return item.symbol
-      // return item['symbol']
     })
     return inputText.join(' ')
   },
@@ -76,22 +102,28 @@ const mutations = {
     switch (true) {
       case lengthInput === 0 && type === NUMBER:
         state.input.push(payload)
+        aggiungiInput(payload)
         break
       case type === NUMBER && typePrec === NUMBER:
         state.input[inputPrec].value += value
         state.input[inputPrec].symbol += symbol
+        state.inputDec[inputPrec] = aggiungiCifra(state.inputDec[inputPrec], value)
         break
       case type === OPERATOR && typePrec === NUMBER:
         state.input.push(payload)
         state.lastOperator = value
+        aggiungiInput(payload)
         break
       case type === OPERATOR && typePrec === OPERATOR:
         state.input[inputPrec].value = value
         state.input[inputPrec].symbol = symbol
         state.lastOperator = value
+        eliminaUltimoInputIntero()
+        aggiungiInput(payload)
         break
       case type === NUMBER && typePrec === OPERATOR:
         state.input.push(payload)
+        aggiungiInput(payload)
         break
       case type === EQUAL && typePrec === OPERATOR:
         state.input.pop()
@@ -99,12 +131,15 @@ const mutations = {
         calcola(state.input)
         state.listOperation.unshift(getters.getInputText() + ' ' + getters.getRisultato())
         state.input = []
+        eliminaUltimoInputIntero()
+        aggiungiInput(payload)
         break
       case type === EQUAL && typePrec === NUMBER:
         state.input.push(payload)
         calcola(state.input)
         state.listOperation.unshift(getters.getInputText() + ' ' + getters.getRisultato())
         state.input = []
+        aggiungiInput(payload)
         break
       default:
         break
