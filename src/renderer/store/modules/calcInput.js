@@ -17,15 +17,6 @@ class Btn {
     }
     this.type = obj.type // il tipo di pulsante (number, operator, clear, equal, modificatore)
   }
-
-  get dati () {
-    return {
-      key: this.key,
-      label: this.label,
-      icon: this.icon,
-      value: this.value
-    }
-  }
 }
 
 const BTN_0 = new Btn({key: 'N0', label: '0', value: '0', type: NUMBER})

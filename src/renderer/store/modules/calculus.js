@@ -5,51 +5,54 @@ const NUMBER = 'number'
 const OPERATOR = 'operator'
 // const CLEAR = 'clear'
 const EQUAL = 'equal'
-// const MODIFICATORE = 'modifier'
+const MODIFICATORE = 'modifier'
 
 const state = {
   formatNumber: 'it',
-  firstNumber: null,
-  secondNumber: null,
-  result: new Decimal(0),
-  input: [],
   inputDec: [],
+  resultDec: new Decimal(0),
   inputText: '',
-  listOperation: [],
-  lastOperator: null
+  listOperationDec: []
 }
 
 function formatoNumero (x) {
   return x.toNumber().toLocaleString(state.formatNumber)
 }
 
-function calcola (elements) {
+function calcolaDec (elements) {
   if (elements.length === 0) return
   let decimal = null
   for (let i = 0; i < elements.length; i++) {
-    const value = elements[i].value
     const type = elements[i].type
     if (i === 0 && type === NUMBER) {
-      decimal = new Decimal(value)
+      decimal = elements[i]
     } else if (i < elements.length - 1) {
+      const value = elements[i].value
       if (type === OPERATOR) {
-        decimal = decimal[value](elements[i + 1].value)
+        decimal = decimal[value](elements[i + 1])
         i += 1
       }
     }
   }
-  console.log(decimal)
-  state.result = decimal
+  state.resultDec = decimal
 }
 
 function aggiungiInput (input) {
-  if (input.type === NUMBER) {
-    const x = new Decimal(input.value)
+  if (Decimal.isDecimal(input)) {
+    const x = input
     x.type = NUMBER
     x.symbol = formatoNumero(x)
+    console.log(x)
     state.inputDec.push(x)
   } else {
-    state.inputDec.push(input)
+    if (input.type === NUMBER) {
+      const x = new Decimal(input.value)
+      x.type = NUMBER
+      x.symbol = formatoNumero(x)
+      state.inputDec.push(x)
+    } else {
+      state.inputDec.push(input)
+    }
   }
 }
 
@@ -60,91 +63,97 @@ function aggiungiCifra (x, addX) {
   return newX
 }
 
+function toogleSegno (x) {
+  const y = x.neg()
+  y.type = NUMBER
+  y.symbol = formatoNumero(y)
+  return y
+}
+
+function addDecimalPlaces (x) {
+  const decimali = x.decimalPlaces()
+  console.log(decimali)
+}
+
 function eliminaUltimoInputIntero () {
   state.inputDec.pop()
 }
 
 const getters = {
-  getRisultato () {
-    // const x = state.result.d[0] * state.result.s
-    return state.result.toNumber().toLocaleString(state.formatNumber)
-    // return x.toLocaleString(state.formatNumber)
+  getRisultatoDec () {
+    return formatoNumero(state.resultDec)
   },
-  getInput () {
-    return state.input
-  },
-  getInputText () {
-    const inputText = state.input.map(function (item) {
-      if (item.type === NUMBER) {
-        const x = new Decimal(item.value)
-        return x.toNumber().toLocaleString(state.formatNumber)
-      }
+  getInputTextDec () {
+    const inputText = state.inputDec.map(function (item) {
       return item.symbol
     })
     return inputText.join(' ')
   },
-  getListOperation () {
-    return state.listOperation
+  getListOperationDec () {
+    return state.listOperationDec
   }
 }
 
 const mutations = {
   addInput (state, payload) {
-    const lengthInput = state.input.length
-    // const input = lengthInput
+    const lengthInput = state.inputDec.length
     const inputPrec = lengthInput > 0 ? lengthInput - 1 : 0
-    const typePrec = lengthInput > 0 ? state.input[lengthInput - 1].type : '-'
+    const typePrec = lengthInput > 0 ? state.inputDec[lengthInput - 1].type : '-'
 
     const type = payload.type
     const value = payload.value
-    const symbol = payload.symbol
 
     switch (true) {
       case lengthInput === 0 && type === NUMBER:
-        state.input.push(payload)
         aggiungiInput(payload)
         break
+      case lengthInput === 0 && type === MODIFICATORE:
+        if (value === 'INVERTI') {
+          aggiungiInput(new Decimal(-0))
+        } else if (value === 'DECIMALE') {
+          aggiungiInput(new Decimal(0.1))
+          addDecimalPlaces(state.inputDec[0])
+        }
+        break
       case type === NUMBER && typePrec === NUMBER:
-        state.input[inputPrec].value += value
-        state.input[inputPrec].symbol += symbol
-        state.inputDec[inputPrec] = aggiungiCifra(state.inputDec[inputPrec], value)
+        const x = aggiungiCifra(state.inputDec[inputPrec], value)
+        eliminaUltimoInputIntero()
+        aggiungiInput(x)
+        break
+      case type === MODIFICATORE && typePrec === NUMBER:
+        if (value === 'INVERTI') {
+          const x = toogleSegno(state.inputDec[inputPrec])
+          eliminaUltimoInputIntero()
+          aggiungiInput(x)
+        }
         break
       case type === OPERATOR && typePrec === NUMBER:
-        state.input.push(payload)
-        state.lastOperator = value
         aggiungiInput(payload)
         break
       case type === OPERATOR && typePrec === OPERATOR:
-        state.input[inputPrec].value = value
-        state.input[inputPrec].symbol = symbol
-        state.lastOperator = value
         eliminaUltimoInputIntero()
         aggiungiInput(payload)
         break
       case type === NUMBER && typePrec === OPERATOR:
-        state.input.push(payload)
         aggiungiInput(payload)
         break
       case type === EQUAL && typePrec === OPERATOR:
-        state.input.pop()
-        state.input.push(payload)
-        calcola(state.input)
-        state.listOperation.unshift(getters.getInputText() + ' ' + getters.getRisultato())
-        state.input = []
         eliminaUltimoInputIntero()
         aggiungiInput(payload)
+        calcolaDec(state.inputDec)
+        state.listOperationDec.unshift(getters.getInputTextDec() + ' ' + getters.getRisultatoDec())
+        state.inputDec = []
         break
       case type === EQUAL && typePrec === NUMBER:
-        state.input.push(payload)
-        calcola(state.input)
-        state.listOperation.unshift(getters.getInputText() + ' ' + getters.getRisultato())
-        state.input = []
         aggiungiInput(payload)
+        calcolaDec(state.inputDec)
+        state.listOperationDec.unshift(getters.getInputTextDec() + ' ' + getters.getRisultatoDec())
+        state.inputDec = []
         break
       default:
         break
     }
-    calcola(state.input)
+    calcolaDec(state.inputDec)
   }
 }
 

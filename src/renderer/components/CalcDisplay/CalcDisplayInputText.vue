@@ -17,8 +17,8 @@ export default {
   },
   computed: {
     ...mapGetters('calculus', {
-      getInputText: 'getInputText',
-      getListOperation: 'getListOperation'
+      getInputText: 'getInputTextDec',
+      getListOperation: 'getListOperationDec'
     })
   }
 }
