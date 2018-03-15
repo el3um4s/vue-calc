@@ -7,6 +7,9 @@ const OPERATOR = 'operator'
 const EQUAL = 'equal'
 const MODIFICATORE = 'modifier'
 
+const NESSUNDECIMALE = 'nessun decimale'
+const DECIMALEIMPOSTATO = 'decimale impostato'
+
 const state = {
   formatNumber: 'it',
   inputDec: [],
@@ -42,13 +45,18 @@ function aggiungiInput (input) {
     const x = input
     x.type = NUMBER
     x.symbol = formatoNumero(x)
-    console.log(x)
+    if (!x.hasOwnProperty('hasDecimal')) {
+      x.hasDecimal = NESSUNDECIMALE
+    }
     state.inputDec.push(x)
   } else {
     if (input.type === NUMBER) {
       const x = new Decimal(input.value)
       x.type = NUMBER
       x.symbol = formatoNumero(x)
+      if (!x.hasOwnProperty('hasDecimal')) {
+        x.hasDecimal = NESSUNDECIMALE
+      }
       state.inputDec.push(x)
     } else {
       state.inputDec.push(input)
@@ -57,22 +65,30 @@ function aggiungiInput (input) {
 }
 
 function aggiungiCifra (x, addX) {
+  if (!x.hasOwnProperty('hasDecimal')) {
+    x.hasDecimal = NESSUNDECIMALE
+  }
+  let decimale = x.hasDecimal
   const newX = new Decimal(x.toString() + addX)
   newX.type = NUMBER
   newX.symbol = formatoNumero(newX)
+  newX.hasDecimal = decimale
   return newX
 }
 
 function toogleSegno (x) {
   const y = x.neg()
-  y.type = NUMBER
-  y.symbol = formatoNumero(y)
   return y
 }
 
 function addDecimalPlaces (x) {
-  const decimali = x.decimalPlaces()
-  console.log(decimali)
+  // const decimali = x.decimalPlaces()
+  if (!x.hasOwnProperty('hasDecimal')) {
+    x.hasDecimal = DECIMALEIMPOSTATO
+  } else if (x.hasDecimal === NESSUNDECIMALE) {
+    x.hasDecimal = DECIMALEIMPOSTATO
+  }
+  return x
 }
 
 function eliminaUltimoInputIntero () {
@@ -111,8 +127,10 @@ const mutations = {
         if (value === 'INVERTI') {
           aggiungiInput(new Decimal(-0))
         } else if (value === 'DECIMALE') {
-          aggiungiInput(new Decimal(0.1))
-          addDecimalPlaces(state.inputDec[0])
+          // aggiungiInput(new Decimal('0.0'))
+          // addDecimalPlaces(state.inputDec[0])
+          const x = addDecimalPlaces(new Decimal(0))
+          aggiungiInput(x)
         }
         break
       case type === NUMBER && typePrec === NUMBER:
@@ -123,6 +141,10 @@ const mutations = {
       case type === MODIFICATORE && typePrec === NUMBER:
         if (value === 'INVERTI') {
           const x = toogleSegno(state.inputDec[inputPrec])
+          eliminaUltimoInputIntero()
+          aggiungiInput(x)
+        } else if (value === 'DECIMALE') {
+          const x = addDecimalPlaces(state.inputDec[inputPrec])
           eliminaUltimoInputIntero()
           aggiungiInput(x)
         }
