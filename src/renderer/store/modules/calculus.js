@@ -9,17 +9,29 @@ const MODIFICATORE = 'modifier'
 
 const NESSUNDECIMALE = 'nessun decimale'
 const DECIMALEIMPOSTATO = 'decimale impostato'
+const DECIMALEINSERITO = 'decimale inserito'
 
 const state = {
   formatNumber: 'it',
   inputDec: [],
-  resultDec: new Decimal(0),
+  resultDec: new Decimal(0), // il risultato dell'operazione
   inputText: '',
-  listOperationDec: []
+  listOperationDec: [],
+  decimalPlaces: 20 // il numero di cifre mostrate dal display
 }
 
 function formatoNumero (x) {
-  return x.toNumber().toLocaleString(state.formatNumber)
+  // return x.toNumber().toLocaleString(state.formatNumber, { maximumFractionDigits: state.decimalPlaces })
+  // return x.toNumber().toLocaleString(state.formatNumber)
+  // const y = x.toDecimalPlaces(state.decimalPlaces)
+  // return Number(y).toLocaleString(state.formatNumber, { maximumSignificantDigits: state.decimalPlaces })
+  return x.toDecimalPlaces(state.decimalPlaces).toLocaleString(state.formatNumber)
+}
+
+function puntoDecimale () {
+  const numIn = parseFloat(1 / 2)
+  const strx = numIn.toLocaleString(state.formatNumber)
+  return strx.substr(1, 1)
 }
 
 function calcolaDec (elements) {
@@ -66,14 +78,43 @@ function aggiungiInput (input) {
 
 function aggiungiCifra (x, addX) {
   if (!x.hasOwnProperty('hasDecimal')) {
-    x.hasDecimal = NESSUNDECIMALE
+    const newX = new Decimal(x.toString() + addX)
+    newX.type = NUMBER
+    newX.symbol = formatoNumero(newX)
+    newX.hasDecimal = NESSUNDECIMALE
+    return newX
   }
   let decimale = x.hasDecimal
-  const newX = new Decimal(x.toString() + addX)
-  newX.type = NUMBER
-  newX.symbol = formatoNumero(newX)
-  newX.hasDecimal = decimale
-  return newX
+
+  if (decimale === NESSUNDECIMALE) {
+    const newX = new Decimal(x.toString() + addX)
+    newX.type = NUMBER
+    newX.symbol = formatoNumero(newX)
+    newX.hasDecimal = NESSUNDECIMALE
+    return newX
+  }
+  if (decimale === DECIMALEIMPOSTATO) {
+    const newX = new Decimal(x.toString() + '.' + addX)
+    newX.type = NUMBER
+    newX.symbol = formatoNumero(newX)
+    newX.hasDecimal = DECIMALEINSERITO
+    if (addX === '0') {
+      console.log(' aggiunto uno ZERO')
+    }
+    console.log(newX.e)
+    return newX
+  }
+  if (decimale === DECIMALEINSERITO) {
+    const newX = new Decimal(x.toString() + addX)
+    newX.type = NUMBER
+    newX.symbol = formatoNumero(newX)
+    newX.hasDecimal = DECIMALEINSERITO
+    if (addX === '0') {
+      console.log(' aggiunto uno ZERO')
+    }
+    console.log(newX.e)
+    return newX
+  }
 }
 
 function toogleSegno (x) {
@@ -82,7 +123,6 @@ function toogleSegno (x) {
 }
 
 function addDecimalPlaces (x) {
-  // const decimali = x.decimalPlaces()
   if (!x.hasOwnProperty('hasDecimal')) {
     x.hasDecimal = DECIMALEIMPOSTATO
   } else if (x.hasDecimal === NESSUNDECIMALE) {
@@ -101,6 +141,11 @@ const getters = {
   },
   getInputTextDec () {
     const inputText = state.inputDec.map(function (item) {
+      if (item.type === NUMBER) {
+        if (item.hasDecimal === DECIMALEIMPOSTATO) {
+          return item.symbol + puntoDecimale() + '0'
+        }
+      }
       return item.symbol
     })
     return inputText.join(' ')
@@ -127,8 +172,6 @@ const mutations = {
         if (value === 'INVERTI') {
           aggiungiInput(new Decimal(-0))
         } else if (value === 'DECIMALE') {
-          // aggiungiInput(new Decimal('0.0'))
-          // addDecimalPlaces(state.inputDec[0])
           const x = addDecimalPlaces(new Decimal(0))
           aggiungiInput(x)
         }
@@ -158,6 +201,12 @@ const mutations = {
         break
       case type === NUMBER && typePrec === OPERATOR:
         aggiungiInput(payload)
+        break
+      case type === MODIFICATORE && typePrec === OPERATOR:
+        if (value === 'DECIMALE') {
+          const x = addDecimalPlaces(new Decimal(0))
+          aggiungiInput(x)
+        }
         break
       case type === EQUAL && typePrec === OPERATOR:
         eliminaUltimoInputIntero()
