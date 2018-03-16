@@ -20,66 +20,19 @@ const state = {
   decimalPlaces: 10 // il numero di cifre mostrate dal display
 }
 
-// FUNZIONE CHE CALCOLA IL RISULTATO DELL'OPERAZIONE
-function calcolaDec (elements) {
-  if (elements.length === 0) return
-  let decimal = null
-  for (let i = 0; i < elements.length; i++) {
-    const type = elements[i].type
-    if (i === 0 && type === NUMBER) {
-      decimal = elements[i]
-    } else if (i < elements.length - 1) {
-      const value = elements[i].value
-      if (type === OPERATOR) {
-        decimal = decimal[value](elements[i + 1])
-        i += 1
-      }
-    }
-  }
-  state.resultDec = decimal
-}
-// FINE DELLA FUNZIONE CHE CALCOLA IL RISULTATO DELL'OPERAZIONE
-
-// GETTERS
-const getters = {
-  getRisultatoDec () {
-    return formatoRisultato(state.resultDec)
-  },
-  getInputTextDec () {
-    const inputText = state.inputDec.map(function (item) {
-      if (item.type === NUMBER) {
-        if (item.hasDecimal === DECIMALEIMPOSTATO) {
-          return item.symbol + puntoDecimale() + '0'
-        }
-      }
-      return item.symbol
-    })
-    return inputText.join(' ')
-  },
-  getListOperationDec () {
-    return state.listOperationDec
-  }
-}
-// FINE GETTERS
-
-function formatoRisultato (x) {
-  const y = x.truncated()
-  const z = x.minus(y)
-  if (x.equals(y)) {
-    return y.toNumber().toLocaleString(state.formatNumber)
-  } else {
-    if (z > 0) {
-      return y.toNumber().toLocaleString(state.formatNumber, {minimumFractionDigits: 0}) + puntoDecimale() + z.toString().substring(2, state.decimalPlaces + 2)
-    } else {
-      const parteIntera = y.toNumber().toLocaleString(state.formatNumber, {minimumFractionDigits: 0})
-      const parteDecimale = z.toString().substring(3, state.decimalPlaces + 2)
-      const segno = parteIntera === '0' ? '-' : ''
-      return segno + parteIntera + puntoDecimale() + parteDecimale
-    }
-  }
-}
-
 function formatoNumero (x) {
+  // risultato totale
+  if (!x.hasOwnProperty('type')) {
+    const y = x.truncated()
+    const z = x.minus(y)
+    if (x.equals(y)) {
+      console.log('x=y')
+      return y.toNumber().toLocaleString(state.formatNumber)
+    } else {
+      console.log('x!=y')
+      return y.toNumber().toLocaleString(state.formatNumber, {minimumFractionDigits: 0}) + puntoDecimale() + z.toString().substring(2, state.decimalPlaces + 2)
+    }
+  }
   if (x.hasDecimal === NESSUNDECIMALE) {
     return x.toNumber().toLocaleString(state.formatNumber)
   }
@@ -97,29 +50,38 @@ function puntoDecimale () {
   return strx.substr(1, 1)
 }
 
+function calcolaDec (elements) {
+  if (elements.length === 0) return
+  let decimal = null
+  for (let i = 0; i < elements.length; i++) {
+    const type = elements[i].type
+    if (i === 0 && type === NUMBER) {
+      decimal = elements[i]
+    } else if (i < elements.length - 1) {
+      const value = elements[i].value
+      if (type === OPERATOR) {
+        decimal = decimal[value](elements[i + 1])
+        i += 1
+      }
+    }
+  }
+  state.resultDec = decimal
+}
+
 function aggiungiInput (input) {
   if (Decimal.isDecimal(input)) {
     const x = input
     x.type = NUMBER
-    x.parteIntera = input.truncated()
-    const z = input.minus(x.parteIntera)
-    if (z.equals(x.parteIntera)) {
-      x.parteDecimale = ''
-      x.hasDecimal = NESSUNDECIMALE
-    } else {
-      x.parteDecimale = z.toString().substring(2, state.decimalPlaces + 2)
-      x.hasDecimal = DECIMALEINSERITO
-    }
     x.symbol = formatoNumero(x)
     state.inputDec.push(x)
   } else {
     if (input.type === NUMBER) {
       const x = new Decimal(input.value)
       x.type = NUMBER
+      x.symbol = formatoNumero(x)
       x.hasDecimal = input.hasDecimal
       x.parteIntera = input.parteIntera
       x.parteDecimale = input.parteDecimale
-      x.symbol = formatoNumero(x)
       state.inputDec.push(x)
     } else {
       state.inputDec.push(input)
@@ -129,39 +91,36 @@ function aggiungiInput (input) {
 
 function aggiungiCifra (x, addX) {
   let decimale = x.hasDecimal
+
   if (decimale === NESSUNDECIMALE) {
-    console.log(1)
     const newX = new Decimal(x.toString() + addX)
-    // QUI SUCCEDE QUALCOSA CHE NON CAPISCO
     newX.type = NUMBER
+    newX.symbol = formatoNumero(newX)
     newX.hasDecimal = NESSUNDECIMALE
     newX.parteIntera = x.parteIntera
     newX.parteDecimale = x.parteDecimale
-    newX.symbol = formatoNumero(newX)
     return newX
   }
   if (decimale === DECIMALEIMPOSTATO) {
-    console.log(2)
     x.parteDecimale += '' + addX
     x.parteIntera = x.truncated().toString()
     const newX = new Decimal(x.parteIntera + '.' + x.parteDecimale)
     newX.type = NUMBER
+    newX.symbol = formatoNumero(newX)
     newX.hasDecimal = DECIMALEINSERITO
     newX.parteIntera = x.parteIntera
     newX.parteDecimale = x.parteDecimale
-    newX.symbol = formatoNumero(newX)
     return newX
   }
   if (decimale === DECIMALEINSERITO) {
-    console.log(3)
     x.parteDecimale += '' + addX
     x.parteIntera = x.truncated().toString()
     const newX = new Decimal(x.parteIntera + '.' + x.parteDecimale)
     newX.type = NUMBER
+    newX.symbol = formatoNumero(newX)
     newX.hasDecimal = DECIMALEINSERITO
     newX.parteIntera = x.parteIntera
     newX.parteDecimale = x.parteDecimale
-    newX.symbol = formatoNumero(newX)
     return newX
   }
 }
@@ -180,6 +139,26 @@ function addDecimalPlaces (x) {
 
 function eliminaUltimoInputIntero () {
   state.inputDec.pop()
+}
+
+const getters = {
+  getRisultatoDec () {
+    return formatoNumero(state.resultDec)
+  },
+  getInputTextDec () {
+    const inputText = state.inputDec.map(function (item) {
+      if (item.type === NUMBER) {
+        if (item.hasDecimal === DECIMALEIMPOSTATO) {
+          return item.symbol + puntoDecimale() + '0'
+        }
+      }
+      return item.symbol
+    })
+    return inputText.join(' ')
+  },
+  getListOperationDec () {
+    return state.listOperationDec
+  }
 }
 
 const mutations = {
@@ -205,7 +184,6 @@ const mutations = {
         break
       case type === NUMBER && typePrec === NUMBER:
         const x = aggiungiCifra(state.inputDec[inputPrec], value)
-        // QUI PROBLEMA ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         eliminaUltimoInputIntero()
         aggiungiInput(x)
         break
