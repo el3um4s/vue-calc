@@ -48,9 +48,7 @@ const getters = {
   getInputTextDec () {
     const inputText = state.inputDec.map(function (item) {
       if (item.type === NUMBER) {
-        if (item.hasDecimal === DECIMALEIMPOSTATO) {
-          return item.symbol + puntoDecimale() + '0'
-        }
+        return item.symbol
       }
       return item.symbol
     })
@@ -80,14 +78,26 @@ function formatoRisultato (x) {
 }
 
 function formatoNumero (x) {
-  if (x.hasDecimal === NESSUNDECIMALE) {
+  if (x.conDecimale === NESSUNDECIMALE) {
     return x.toNumber().toLocaleString(state.formatNumber)
   }
-  if (x.hasDecimal === DECIMALEIMPOSTATO) {
-    return x.toNumber().toLocaleString(state.formatNumber)
+  if (x.conDecimale === DECIMALEIMPOSTATO) {
+    // const y = x.truncated()
+    const parteIntera = x.parteIntera.toNumber().toLocaleString(state.formatNumber, {minimumFractionDigits: 0})
+    const parteDecimale = '0'
+    const segno = x.isNegative && x.parteIntera.isZero() ? '-' : ''
+    return segno + parteIntera + puntoDecimale() + parteDecimale
+    // return x.toNumber().toLocaleString(state.formatNumber)
   }
-  if (x.hasDecimal === DECIMALEINSERITO) {
-    return x.toNumber().toLocaleString(state.formatNumber)
+  if (x.conDecimale === DECIMALEINSERITO) {
+    // const y = x.truncated()
+    // const parteIntera = y.toNumber().toLocaleString(state.formatNumber, {minimumFractionDigits: 0})
+    const parteIntera = x.parteIntera.toNumber().toLocaleString(state.formatNumber, {minimumFractionDigits: 0})
+    // const parteIntera = x.parteIntera
+    const parteDecimale = x.parteDecimale.substring(0, state.decimalPlaces)
+    const segno = x.isNegative && x.parteIntera.isZero() ? '-' : ''
+    return segno + parteIntera + puntoDecimale() + parteDecimale
+    // return x.toNumber().toLocaleString(state.formatNumber)
   }
 }
 
@@ -98,17 +108,32 @@ function puntoDecimale () {
 }
 
 function aggiungiInput (input) {
+  console.log('input passato su aggiungiInput')
+  console.log(input)
   if (Decimal.isDecimal(input)) {
     const x = input
     x.type = NUMBER
     x.parteIntera = input.truncated()
-    const z = input.minus(x.parteIntera)
-    if (z.equals(x.parteIntera)) {
-      x.parteDecimale = ''
-      x.hasDecimal = NESSUNDECIMALE
+    if (input.hasOwnProperty('parteDecimale')) {
+      x.parteDecimale = input.parteDecimale
     } else {
-      x.parteDecimale = z.toString().substring(2, state.decimalPlaces + 2)
-      x.hasDecimal = DECIMALEINSERITO
+      x.parteDecimale = ''
+    }
+    if (input.hasOwnProperty('conDecimale')) {
+      x.conDecimale = input.conDecimale
+    } else {
+      x.conDecimale = NESSUNDECIMALE
+    }
+    // const z = input.minus(x.parteIntera) // ???
+    // x.parteDecimale = z.toString().substring(2, state.decimalPlaces + 2) // ???
+    if (input.equals(x.parteIntera) && x.parteDecimale !== '0') {
+      if (x.conDecimale === DECIMALEIMPOSTATO) {
+        x.conDecimale = DECIMALEIMPOSTATO
+      } else {
+        x.conDecimale = NESSUNDECIMALE
+      }
+    } else {
+      x.conDecimale = DECIMALEINSERITO
     }
     x.symbol = formatoNumero(x)
     state.inputDec.push(x)
@@ -116,7 +141,7 @@ function aggiungiInput (input) {
     if (input.type === NUMBER) {
       const x = new Decimal(input.value)
       x.type = NUMBER
-      x.hasDecimal = input.hasDecimal
+      x.conDecimale = input.conDecimale
       x.parteIntera = input.parteIntera
       x.parteDecimale = input.parteDecimale
       x.symbol = formatoNumero(x)
@@ -128,37 +153,35 @@ function aggiungiInput (input) {
 }
 
 function aggiungiCifra (x, addX) {
-  let decimale = x.hasDecimal
+  let decimale = x.conDecimale
   if (decimale === NESSUNDECIMALE) {
-    console.log(1)
     const newX = new Decimal(x.toString() + addX)
-    // QUI SUCCEDE QUALCOSA CHE NON CAPISCO
     newX.type = NUMBER
-    newX.hasDecimal = NESSUNDECIMALE
+    newX.conDecimale = NESSUNDECIMALE
     newX.parteIntera = x.parteIntera
     newX.parteDecimale = x.parteDecimale
     newX.symbol = formatoNumero(newX)
     return newX
   }
   if (decimale === DECIMALEIMPOSTATO) {
-    console.log(2)
     x.parteDecimale += '' + addX
-    x.parteIntera = x.truncated().toString()
+    x.parteIntera = x.truncated()
+    // x.parteIntera = x.truncated().toString()
     const newX = new Decimal(x.parteIntera + '.' + x.parteDecimale)
     newX.type = NUMBER
-    newX.hasDecimal = DECIMALEINSERITO
+    newX.conDecimale = DECIMALEINSERITO
     newX.parteIntera = x.parteIntera
     newX.parteDecimale = x.parteDecimale
     newX.symbol = formatoNumero(newX)
     return newX
   }
   if (decimale === DECIMALEINSERITO) {
-    console.log(3)
     x.parteDecimale += '' + addX
-    x.parteIntera = x.truncated().toString()
+    x.parteIntera = x.truncated()
+    // x.parteIntera = x.truncated().toString()
     const newX = new Decimal(x.parteIntera + '.' + x.parteDecimale)
     newX.type = NUMBER
-    newX.hasDecimal = DECIMALEINSERITO
+    newX.conDecimale = DECIMALEINSERITO
     newX.parteIntera = x.parteIntera
     newX.parteDecimale = x.parteDecimale
     newX.symbol = formatoNumero(newX)
@@ -167,13 +190,17 @@ function aggiungiCifra (x, addX) {
 }
 
 function toogleSegno (x) {
+  console.log('x arrivato a toggleSegno')
+  console.log(x)
   const y = x.neg()
+  console.log('x trasformata in y da toogleSegno')
+  console.log(y)
   return y
 }
 
 function addDecimalPlaces (x) {
-  if (x.hasDecimal === NESSUNDECIMALE) {
-    x.hasDecimal = DECIMALEIMPOSTATO
+  if (x.conDecimale === NESSUNDECIMALE) {
+    x.conDecimale = DECIMALEIMPOSTATO
   }
   return x
 }
@@ -205,13 +232,16 @@ const mutations = {
         break
       case type === NUMBER && typePrec === NUMBER:
         const x = aggiungiCifra(state.inputDec[inputPrec], value)
-        // QUI PROBLEMA ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         eliminaUltimoInputIntero()
         aggiungiInput(x)
         break
       case type === MODIFICATORE && typePrec === NUMBER:
         if (value === 'INVERTI') {
+          console.log('input passato su toogleSegno')
+          console.log(state.inputDec[inputPrec])
           const x = toogleSegno(state.inputDec[inputPrec])
+          console.log('input restituito da toggleSegno e passato ad aggiungiInput')
+          console.log(x)
           eliminaUltimoInputIntero()
           aggiungiInput(x)
         } else if (value === 'DECIMALE') {
