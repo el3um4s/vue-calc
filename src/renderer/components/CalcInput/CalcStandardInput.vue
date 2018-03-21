@@ -20,7 +20,7 @@ import { mapGetters, mapMutations } from 'vuex'
 export default {
   computed: {
     ...mapGetters('calcInput', {
-      buttons: 'listButtonsStandard'
+      buttons: 'listButtons'
     })
   },
   methods: {

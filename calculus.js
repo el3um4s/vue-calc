@@ -2,10 +2,10 @@
 import { Decimal } from 'decimal.js'
 
 const NUMBER = 'number'
-// const OPERATOR = 'operator'
+const OPERATOR = 'operator'
 // const CLEAR = 'clear'
-// const EQUAL = 'equal'
-// const MODIFICATORE = 'modifier'
+const EQUAL = 'equal'
+const MODIFICATORE = 'modifier'
 
 const NESSUNDECIMALE = 'nessun decimale'
 const DECIMALEIMPOSTATO = 'decimale impostato'
@@ -20,44 +20,24 @@ const state = {
   decimalPlaces: 10 // il numero di cifre mostrate dal display
 }
 
-class Input {
-  constructor (obj) {
-    this.symbol = obj.symbol
-    this.value = obj.value
-    this.type = obj.type
-    this.conParteDecimale = obj.conParteDecimale
-  }
-
-  isNumber (obj) {
-    return this.type === NUMBER
-  }
-
-  static unisciNumero (objX, objY) {
-    if (!objX.isNumber() || !objY.isNumber()) {
-      return false
-    }
-    return true
-  }
-}
-
 // FUNZIONE CHE CALCOLA IL RISULTATO DELL'OPERAZIONE
-// function calcolaDec (elements) {
-//   if (elements.length === 0) return
-//   let decimal = null
-//   for (let i = 0; i < elements.length; i++) {
-//     const type = elements[i].type
-//     if (i === 0 && type === NUMBER) {
-//       decimal = elements[i]
-//     } else if (i < elements.length - 1) {
-//       const value = elements[i].value
-//       if (type === OPERATOR) {
-//         decimal = decimal[value](elements[i + 1])
-//         i += 1
-//       }
-//     }
-//   }
-//   state.resultDec = decimal
-// }
+function calcolaDec (elements) {
+  if (elements.length === 0) return
+  let decimal = null
+  for (let i = 0; i < elements.length; i++) {
+    const type = elements[i].type
+    if (i === 0 && type === NUMBER) {
+      decimal = elements[i]
+    } else if (i < elements.length - 1) {
+      const value = elements[i].value
+      if (type === OPERATOR) {
+        decimal = decimal[value](elements[i + 1])
+        i += 1
+      }
+    }
+  }
+  state.resultDec = decimal
+}
 // FINE DELLA FUNZIONE CHE CALCOLA IL RISULTATO DELL'OPERAZIONE
 
 // GETTERS
@@ -229,87 +209,80 @@ function eliminaUltimoInputIntero () {
   state.inputDec.pop()
 }
 
-
 const mutations = {
   addInput (state, payload) {
-    console.log(payload)
-    let nuovoDato = new Input(payload)
-    console.log(nuovoDato)
-    console.log(nuovoDato.isNumber())
-    console.log('unisciNumero')
-    console.log(Input.unisciNumero(nuovoDato, nuovoDato))
-    // const lengthInput = state.inputDec.length
-    // const inputPrec = lengthInput > 0 ? lengthInput - 1 : 0
-    // const typePrec = lengthInput > 0 ? state.inputDec[lengthInput - 1].type : '-'
-    //
-    // const type = payload.type
-    // const value = payload.value
-    //
-    // switch (true) {
-    //   case lengthInput === 0 && type === NUMBER:
-    //     aggiungiInput(payload)
-    //     break
-    //   case lengthInput === 0 && type === MODIFICATORE:
-    //     if (value === 'INVERTI') {
-    //       aggiungiInput(new Decimal(-0))
-    //     } else if (value === 'DECIMALE') {
-    //       const x = addDecimalPlaces(new Decimal(0))
-    //       aggiungiInput(x)
-    //     }
-    //     break
-    //   case type === NUMBER && typePrec === NUMBER:
-    //     const x = aggiungiCifra(state.inputDec[inputPrec], value)
-    //     eliminaUltimoInputIntero()
-    //     aggiungiInput(x)
-    //     break
-    //   case type === MODIFICATORE && typePrec === NUMBER:
-    //     if (value === 'INVERTI') {
-    //       console.log('input passato su toogleSegno')
-    //       console.log(state.inputDec[inputPrec])
-    //       const x = toogleSegno(state.inputDec[inputPrec])
-    //       console.log('input restituito da toggleSegno e passato ad aggiungiInput')
-    //       console.log(x)
-    //       eliminaUltimoInputIntero()
-    //       aggiungiInput(x)
-    //     } else if (value === 'DECIMALE') {
-    //       const x = addDecimalPlaces(state.inputDec[inputPrec])
-    //       eliminaUltimoInputIntero()
-    //       aggiungiInput(x)
-    //     }
-    //     break
-    //   case type === OPERATOR && typePrec === NUMBER:
-    //     aggiungiInput(payload)
-    //     break
-    //   case type === OPERATOR && typePrec === OPERATOR:
-    //     eliminaUltimoInputIntero()
-    //     aggiungiInput(payload)
-    //     break
-    //   case type === NUMBER && typePrec === OPERATOR:
-    //     aggiungiInput(payload)
-    //     break
-    //   case type === MODIFICATORE && typePrec === OPERATOR:
-    //     if (value === 'DECIMALE') {
-    //       const x = addDecimalPlaces(new Decimal(0))
-    //       aggiungiInput(x)
-    //     }
-    //     break
-    //   case type === EQUAL && typePrec === OPERATOR:
-    //     eliminaUltimoInputIntero()
-    //     aggiungiInput(payload)
-    //     calcolaDec(state.inputDec)
-    //     state.listOperationDec.unshift(getters.getInputTextDec() + ' ' + getters.getRisultatoDec())
-    //     state.inputDec = []
-    //     break
-    //   case type === EQUAL && typePrec === NUMBER:
-    //     aggiungiInput(payload)
-    //     calcolaDec(state.inputDec)
-    //     state.listOperationDec.unshift(getters.getInputTextDec() + ' ' + getters.getRisultatoDec())
-    //     state.inputDec = []
-    //     break
-    //   default:
-    //     break
-    // }
-    // calcolaDec(state.inputDec)
+    const lengthInput = state.inputDec.length
+    const inputPrec = lengthInput > 0 ? lengthInput - 1 : 0
+    const typePrec = lengthInput > 0 ? state.inputDec[lengthInput - 1].type : '-'
+
+    const type = payload.type
+    const value = payload.value
+
+    switch (true) {
+      case lengthInput === 0 && type === NUMBER:
+        aggiungiInput(payload)
+        break
+      case lengthInput === 0 && type === MODIFICATORE:
+        if (value === 'INVERTI') {
+          aggiungiInput(new Decimal(-0))
+        } else if (value === 'DECIMALE') {
+          const x = addDecimalPlaces(new Decimal(0))
+          aggiungiInput(x)
+        }
+        break
+      case type === NUMBER && typePrec === NUMBER:
+        const x = aggiungiCifra(state.inputDec[inputPrec], value)
+        eliminaUltimoInputIntero()
+        aggiungiInput(x)
+        break
+      case type === MODIFICATORE && typePrec === NUMBER:
+        if (value === 'INVERTI') {
+          console.log('input passato su toogleSegno')
+          console.log(state.inputDec[inputPrec])
+          const x = toogleSegno(state.inputDec[inputPrec])
+          console.log('input restituito da toggleSegno e passato ad aggiungiInput')
+          console.log(x)
+          eliminaUltimoInputIntero()
+          aggiungiInput(x)
+        } else if (value === 'DECIMALE') {
+          const x = addDecimalPlaces(state.inputDec[inputPrec])
+          eliminaUltimoInputIntero()
+          aggiungiInput(x)
+        }
+        break
+      case type === OPERATOR && typePrec === NUMBER:
+        aggiungiInput(payload)
+        break
+      case type === OPERATOR && typePrec === OPERATOR:
+        eliminaUltimoInputIntero()
+        aggiungiInput(payload)
+        break
+      case type === NUMBER && typePrec === OPERATOR:
+        aggiungiInput(payload)
+        break
+      case type === MODIFICATORE && typePrec === OPERATOR:
+        if (value === 'DECIMALE') {
+          const x = addDecimalPlaces(new Decimal(0))
+          aggiungiInput(x)
+        }
+        break
+      case type === EQUAL && typePrec === OPERATOR:
+        eliminaUltimoInputIntero()
+        aggiungiInput(payload)
+        calcolaDec(state.inputDec)
+        state.listOperationDec.unshift(getters.getInputTextDec() + ' ' + getters.getRisultatoDec())
+        state.inputDec = []
+        break
+      case type === EQUAL && typePrec === NUMBER:
+        aggiungiInput(payload)
+        calcolaDec(state.inputDec)
+        state.listOperationDec.unshift(getters.getInputTextDec() + ' ' + getters.getRisultatoDec())
+        state.inputDec = []
+        break
+      default:
+        break
+    }
+    calcolaDec(state.inputDec)
   }
 }
 

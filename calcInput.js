@@ -16,20 +16,22 @@ class Btn {
       this.symbol = obj.label
     }
     this.type = obj.type // il tipo di pulsante (number, operator, clear, equal, modificatore)
-    this.conParteDecimale = false
+    this.conDecimale = 'nessun decimale'
+    this.parteIntera = ''
+    this.parteDecimale = ''
   }
 }
 
-const BTN_0 = new Btn({key: 'N0', label: '0', value: '0', type: NUMBER})
-const BTN_1 = new Btn({key: 'N1', label: '1', value: '1', type: NUMBER})
-const BTN_2 = new Btn({key: 'N2', label: '2', value: '2', type: NUMBER})
-const BTN_3 = new Btn({key: 'N3', label: '3', value: '3', type: NUMBER})
-const BTN_4 = new Btn({key: 'N4', label: '4', value: '4', type: NUMBER})
-const BTN_5 = new Btn({key: 'N5', label: '5', value: '5', type: NUMBER})
-const BTN_6 = new Btn({key: 'N6', label: '6', value: '6', type: NUMBER})
-const BTN_7 = new Btn({key: 'N7', label: '7', value: '7', type: NUMBER})
-const BTN_8 = new Btn({key: 'N8', label: '8', value: '8', type: NUMBER})
-const BTN_9 = new Btn({key: 'N9', label: '9', value: '9', type: NUMBER})
+const BTN_0 = new Btn({key: 'N0', label: '0', value: 0, type: NUMBER})
+const BTN_1 = new Btn({key: 'N1', label: '1', value: 1, type: NUMBER})
+const BTN_2 = new Btn({key: 'N2', label: '2', value: 2, type: NUMBER})
+const BTN_3 = new Btn({key: 'N3', label: '3', value: 3, type: NUMBER})
+const BTN_4 = new Btn({key: 'N4', label: '4', value: 4, type: NUMBER})
+const BTN_5 = new Btn({key: 'N5', label: '5', value: 5, type: NUMBER})
+const BTN_6 = new Btn({key: 'N6', label: '6', value: 6, type: NUMBER})
+const BTN_7 = new Btn({key: 'N7', label: '7', value: 7, type: NUMBER})
+const BTN_8 = new Btn({key: 'N8', label: '8', value: 8, type: NUMBER})
+const BTN_9 = new Btn({key: 'N9', label: '9', value: 9, type: NUMBER})
 
 const BTN_DIVIDE = new Btn({key: 'DIVIDE', label: '÷', icon: 'mdi-division', value: 'div', type: OPERATOR})
 const BTN_MOLT = new Btn({key: 'MOLT', label: '*', icon: 'mdi-multiplication', value: 'mul', type: OPERATOR})
@@ -61,8 +63,21 @@ const state = {
 }
 
 const getters = {
-  listButtons (state) {
+  listButtonsStandard (state) {
     return state.calcStandard
+  },
+  listButtonsAdvanced (state) {
+    return state.calcAdvanced
+  },
+  listButtons: (state) => (typeCalc) => {
+    const tipo = typeCalc.toLowerCase
+
+    switch (tipo) {
+      case 'standard':
+        return state.calcStandard
+      default:
+        return state.calcStandard
+    }
   }
 }
 
