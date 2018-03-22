@@ -1,15 +1,17 @@
 
 import { Decimal } from 'decimal.js'
 
-const NUMBER = 'number'
+const NUMBER = 'NUMBER'
+const OPERAZIONEBASE = 'OPERAZIONEBASE'
+const PUNTODECIMALE = 'PUNTODECIMALE'
 // const OPERATOR = 'operator'
 // const CLEAR = 'clear'
 // const EQUAL = 'equal'
 // const MODIFICATORE = 'modifier'
 
-const NESSUNDECIMALE = 'nessun decimale'
-const DECIMALEIMPOSTATO = 'decimale impostato'
-const DECIMALEINSERITO = 'decimale inserito'
+// const NESSUNDECIMALE = 'nessun decimale'
+// const DECIMALEIMPOSTATO = 'decimale impostato'
+// const DECIMALEINSERITO = 'decimale inserito'
 
 function puntoDecimale () {
   const numIn = parseFloat(1 / 2)
@@ -48,11 +50,11 @@ class Input {
   }
 
   isPuntoDecimale (obj) {
-    return this.value === 'PUNTODECIMALE'
+    return this.type === PUNTODECIMALE
   }
 
   isOperazioneBase (obj) {
-    return this.value === 'operazionebase'
+    return this.type === OPERAZIONEBASE
   }
 
   static unisciNumero (x, y) {
@@ -71,6 +73,16 @@ class Input {
       value: x.conParteDecimale ? x.value : x.value + puntoDecimale(),
       type: x.type,
       conParteDecimale: true
+    })
+    return z
+  }
+
+  static restituisciNumeroDecimal (x) {
+    let z = new Input({
+      symbol: x.toString(),
+      value: x.toString(),
+      type: NUMBER,
+      conParteDecimale: false
     })
     return z
   }
@@ -133,133 +145,29 @@ function formatoRisultato (x) {
   }
 }
 
-function formatoNumero (x) {
-  if (x.conDecimale === NESSUNDECIMALE) {
-    return x.toNumber().toLocaleString(state.formatNumber)
-  }
-  if (x.conDecimale === DECIMALEIMPOSTATO) {
-    // const y = x.truncated()
-    const parteIntera = x.parteIntera.toNumber().toLocaleString(state.formatNumber, {minimumFractionDigits: 0})
-    const parteDecimale = '0'
-    const segno = x.isNegative && x.parteIntera.isZero() ? '-' : ''
-    return segno + parteIntera + puntoDecimale() + parteDecimale
-    // return x.toNumber().toLocaleString(state.formatNumber)
-  }
-  if (x.conDecimale === DECIMALEINSERITO) {
-    // const y = x.truncated()
-    // const parteIntera = y.toNumber().toLocaleString(state.formatNumber, {minimumFractionDigits: 0})
-    const parteIntera = x.parteIntera.toNumber().toLocaleString(state.formatNumber, {minimumFractionDigits: 0})
-    // const parteIntera = x.parteIntera
-    const parteDecimale = x.parteDecimale.substring(0, state.decimalPlaces)
-    const segno = x.isNegative && x.parteIntera.isZero() ? '-' : ''
-    return segno + parteIntera + puntoDecimale() + parteDecimale
-    // return x.toNumber().toLocaleString(state.formatNumber)
-  }
-}
-
-
-
-function aggiungiInput (input) {
-  console.log('input passato su aggiungiInput')
-  console.log(input)
-  if (Decimal.isDecimal(input)) {
-    const x = input
-    x.type = NUMBER
-    x.parteIntera = input.truncated()
-    if (input.hasOwnProperty('parteDecimale')) {
-      x.parteDecimale = input.parteDecimale
-    } else {
-      x.parteDecimale = ''
-    }
-    if (input.hasOwnProperty('conDecimale')) {
-      x.conDecimale = input.conDecimale
-    } else {
-      x.conDecimale = NESSUNDECIMALE
-    }
-    // const z = input.minus(x.parteIntera) // ???
-    // x.parteDecimale = z.toString().substring(2, state.decimalPlaces + 2) // ???
-    if (input.equals(x.parteIntera) && x.parteDecimale !== '0') {
-      if (x.conDecimale === DECIMALEIMPOSTATO) {
-        x.conDecimale = DECIMALEIMPOSTATO
-      } else {
-        x.conDecimale = NESSUNDECIMALE
-      }
-    } else {
-      x.conDecimale = DECIMALEINSERITO
-    }
-    x.symbol = formatoNumero(x)
-    state.inputDec.push(x)
-  } else {
-    if (input.type === NUMBER) {
-      const x = new Decimal(input.value)
-      x.type = NUMBER
-      x.conDecimale = input.conDecimale
-      x.parteIntera = input.parteIntera
-      x.parteDecimale = input.parteDecimale
-      x.symbol = formatoNumero(x)
-      state.inputDec.push(x)
-    } else {
-      state.inputDec.push(input)
-    }
-  }
-}
-
-function aggiungiCifra (x, addX) {
-  let decimale = x.conDecimale
-  if (decimale === NESSUNDECIMALE) {
-    const newX = new Decimal(x.toString() + addX)
-    newX.type = NUMBER
-    newX.conDecimale = NESSUNDECIMALE
-    newX.parteIntera = x.parteIntera
-    newX.parteDecimale = x.parteDecimale
-    newX.symbol = formatoNumero(newX)
-    return newX
-  }
-  if (decimale === DECIMALEIMPOSTATO) {
-    x.parteDecimale += '' + addX
-    x.parteIntera = x.truncated()
-    // x.parteIntera = x.truncated().toString()
-    const newX = new Decimal(x.parteIntera + '.' + x.parteDecimale)
-    newX.type = NUMBER
-    newX.conDecimale = DECIMALEINSERITO
-    newX.parteIntera = x.parteIntera
-    newX.parteDecimale = x.parteDecimale
-    newX.symbol = formatoNumero(newX)
-    return newX
-  }
-  if (decimale === DECIMALEINSERITO) {
-    x.parteDecimale += '' + addX
-    x.parteIntera = x.truncated()
-    // x.parteIntera = x.truncated().toString()
-    const newX = new Decimal(x.parteIntera + '.' + x.parteDecimale)
-    newX.type = NUMBER
-    newX.conDecimale = DECIMALEINSERITO
-    newX.parteIntera = x.parteIntera
-    newX.parteDecimale = x.parteDecimale
-    newX.symbol = formatoNumero(newX)
-    return newX
-  }
-}
-
-function toogleSegno (x) {
-  console.log('x arrivato a toggleSegno')
-  console.log(x)
-  const y = x.neg()
-  console.log('x trasformata in y da toogleSegno')
-  console.log(y)
-  return y
-}
-
-function addDecimalPlaces (x) {
-  if (x.conDecimale === NESSUNDECIMALE) {
-    x.conDecimale = DECIMALEIMPOSTATO
-  }
-  return x
-}
-
-function eliminaUltimoInputIntero () {
-  state.inputDec.pop()
-}
+// function formatoNumero (x) {
+//   if (x.conDecimale === NESSUNDECIMALE) {
+//     return x.toNumber().toLocaleString(state.formatNumber)
+//   }
+//   if (x.conDecimale === DECIMALEIMPOSTATO) {
+//     // const y = x.truncated()
+//     const parteIntera = x.parteIntera.toNumber().toLocaleString(state.formatNumber, {minimumFractionDigits: 0})
+//     const parteDecimale = '0'
+//     const segno = x.isNegative && x.parteIntera.isZero() ? '-' : ''
+//     return segno + parteIntera + puntoDecimale() + parteDecimale
+//     // return x.toNumber().toLocaleString(state.formatNumber)
+//   }
+//   if (x.conDecimale === DECIMALEINSERITO) {
+//     // const y = x.truncated()
+//     // const parteIntera = y.toNumber().toLocaleString(state.formatNumber, {minimumFractionDigits: 0})
+//     const parteIntera = x.parteIntera.toNumber().toLocaleString(state.formatNumber, {minimumFractionDigits: 0})
+//     // const parteIntera = x.parteIntera
+//     const parteDecimale = x.parteDecimale.substring(0, state.decimalPlaces)
+//     const segno = x.isNegative && x.parteIntera.isZero() ? '-' : ''
+//     return segno + parteIntera + puntoDecimale() + parteDecimale
+//     // return x.toNumber().toLocaleString(state.formatNumber)
+//   }
+// }
 
 const mutations = {
   addInput (state, payload) {
@@ -272,87 +180,53 @@ const mutations = {
     const thereIsDatoPrecedente = indiceNuovoDato > 0
     const datoPrecedente = thereIsDatoPrecedente ? state.inputDec[indiceNuovoDato - 1] : 0
 
-    console.log(datoNuovo)
-    console.log(datoPrecedente)
-
+    // se non c'è nessun inserimento allora inserisci un nuovo valore in inputDec
     if (!thereIsDatoPrecedente) {
-      aggiungiInputAInputDec(datoNuovo)
-    } else {
-      const datoTemp = Input.unisciNumero(datoPrecedente, datoNuovo)
-      sostituisciUltimoInput(datoTemp)
+      // il nuovo dato è un numero: aggiungilo
+      if (datoNuovo.isNumber()) {
+        aggiungiInputAInputDec(datoNuovo)
+      }
+      // il nuovo dato è il punto decimale: aggiungi uno zero e imposta il punto decimale
+      if (datoNuovo.isPuntoDecimale()) {
+        const datoTemp = Input.aggiungiPuntoDecimale(Input.restituisciNumeroDecimal(0))
+        aggiungiInputAInputDec(datoTemp)
+      }
+      // TODO: il nuovo dato è il segno negativo
+    } else { // se invece c'è un dato già inserito valuta il da farsi
+      // se il datoPrecedente è un NUMBER
+      if (datoPrecedente.isNumber()) {
+        // se il nuovo dato è un numero, aggiungo la cifra al numero datoPrecedente
+        if (datoNuovo.isNumber()) {
+          const datoTemp = Input.unisciNumero(datoPrecedente, datoNuovo)
+          sostituisciUltimoInput(datoTemp)
+        }
+        // se il nuovo dato è il punto decimale aggiungo la parte decimale
+        if (datoNuovo.isPuntoDecimale()) {
+          const datoTemp = Input.aggiungiPuntoDecimale(datoPrecedente)
+          sostituisciUltimoInput(datoTemp)
+        }
+        // se il nuovo dato è un'operazione di base aggiungo un nuovo elemento a inputDec
+        if (datoNuovo.isOperazioneBase()) {
+          aggiungiInputAInputDec(datoNuovo)
+        }
+      }
+      // se il datoPrecedente è un OPERAZIONEBASE
+      if (datoPrecedente.isOperazioneBase()) {
+        // se il nuovo dato è un numero aggiungo un nuovo elemento a inputDec
+        if (datoNuovo.isNumber()) {
+          aggiungiInputAInputDec(datoNuovo)
+        }
+        // se il nuovo dato è il punto decimale aggiungo un numero e poi aggiungo la parte decimale
+        if (datoNuovo.isPuntoDecimale()) {
+          const datoTemp = Input.aggiungiPuntoDecimale(Input.restituisciNumeroDecimal(0))
+          aggiungiInputAInputDec(datoTemp)
+        }
+        // se il nuovo dato è una nuova operazione base allora sostituisco la precedente operazione base
+        if (datoNuovo.isOperazioneBase()) {
+          sostituisciUltimoInput(datoNuovo)
+        }
+      }
     }
-
-    // const lengthInput = state.inputDec.length
-    // const inputPrec = lengthInput > 0 ? lengthInput - 1 : 0
-    // const typePrec = lengthInput > 0 ? state.inputDec[lengthInput - 1].type : '-'
-    //
-    // const type = payload.type
-    // const value = payload.value
-    //
-    // switch (true) {
-    //   case lengthInput === 0 && type === NUMBER:
-    //     aggiungiInput(payload)
-    //     break
-    //   case lengthInput === 0 && type === MODIFICATORE:
-    //     if (value === 'INVERTI') {
-    //       aggiungiInput(new Decimal(-0))
-    //     } else if (value === 'DECIMALE') {
-    //       const x = addDecimalPlaces(new Decimal(0))
-    //       aggiungiInput(x)
-    //     }
-    //     break
-    //   case type === NUMBER && typePrec === NUMBER:
-    //     const x = aggiungiCifra(state.inputDec[inputPrec], value)
-    //     eliminaUltimoInputIntero()
-    //     aggiungiInput(x)
-    //     break
-    //   case type === MODIFICATORE && typePrec === NUMBER:
-    //     if (value === 'INVERTI') {
-    //       console.log('input passato su toogleSegno')
-    //       console.log(state.inputDec[inputPrec])
-    //       const x = toogleSegno(state.inputDec[inputPrec])
-    //       console.log('input restituito da toggleSegno e passato ad aggiungiInput')
-    //       console.log(x)
-    //       eliminaUltimoInputIntero()
-    //       aggiungiInput(x)
-    //     } else if (value === 'DECIMALE') {
-    //       const x = addDecimalPlaces(state.inputDec[inputPrec])
-    //       eliminaUltimoInputIntero()
-    //       aggiungiInput(x)
-    //     }
-    //     break
-    //   case type === OPERATOR && typePrec === NUMBER:
-    //     aggiungiInput(payload)
-    //     break
-    //   case type === OPERATOR && typePrec === OPERATOR:
-    //     eliminaUltimoInputIntero()
-    //     aggiungiInput(payload)
-    //     break
-    //   case type === NUMBER && typePrec === OPERATOR:
-    //     aggiungiInput(payload)
-    //     break
-    //   case type === MODIFICATORE && typePrec === OPERATOR:
-    //     if (value === 'DECIMALE') {
-    //       const x = addDecimalPlaces(new Decimal(0))
-    //       aggiungiInput(x)
-    //     }
-    //     break
-    //   case type === EQUAL && typePrec === OPERATOR:
-    //     eliminaUltimoInputIntero()
-    //     aggiungiInput(payload)
-    //     calcolaDec(state.inputDec)
-    //     state.listOperationDec.unshift(getters.getInputTextDec() + ' ' + getters.getRisultatoDec())
-    //     state.inputDec = []
-    //     break
-    //   case type === EQUAL && typePrec === NUMBER:
-    //     aggiungiInput(payload)
-    //     calcolaDec(state.inputDec)
-    //     state.listOperationDec.unshift(getters.getInputTextDec() + ' ' + getters.getRisultatoDec())
-    //     state.inputDec = []
-    //     break
-    //   default:
-    //     break
-    // }
     // calcolaDec(state.inputDec)
   }
 }

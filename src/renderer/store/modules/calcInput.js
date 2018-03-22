@@ -1,5 +1,6 @@
-const NUMBER = 'number'
-const OPERAZIONEBASE = 'operazionebase'
+const NUMBER = 'NUMBER'
+const OPERAZIONEBASE = 'OPERAZIONEBASE'
+const PUNTODECIMALE = 'PUNTODECIMALE'
 const CLEAR = 'clear'
 const EQUAL = 'equal'
 const MODIFICATORE = 'modifier'
@@ -40,7 +41,7 @@ const BTN_OP_SQUARE = new Btn({key: 'OP_SQUARE', label: '√', icon: 'mdi-square
 const BTN_OP_POT = new Btn({key: 'OP_POT', label: 'x²', icon: 'mdi-format-superscript', value: 'ELEVA', symbol: '²', type: MODIFICATORE})
 const BTN_OP_1DIV = new Btn({key: 'OP_1DIV', label: '⅟', value: '1DIV', type: MODIFICATORE})
 
-const BTN_POINT = new Btn({key: 'POINT', label: ',', value: 'PUNTODECIMALE', type: MODIFICATORE})
+const BTN_POINT = new Btn({key: 'POINT', label: ',', value: 'PUNTODECIMALE', type: PUNTODECIMALE})
 const BTN_SIGN = new Btn({key: 'SIGN', label: '±', value: 'INVERTI', type: MODIFICATORE})
 
 const BTN_RESULT = new Btn({key: 'RESULT', label: '=', icon: 'mdi-equal', value: 'RISULTATO', type: EQUAL})
