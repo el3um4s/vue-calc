@@ -1,6 +1,7 @@
 const NUMBER = 'NUMBER'
 const OPERAZIONEBASE = 'OPERAZIONEBASE'
 const PUNTODECIMALE = 'PUNTODECIMALE'
+const TOGGLESEGNO = 'TOGGLESEGNO'
 const CLEAR = 'clear'
 const EQUAL = 'equal'
 const MODIFICATORE = 'modifier'
@@ -42,7 +43,7 @@ const BTN_OP_POT = new Btn({key: 'OP_POT', label: 'x²', icon: 'mdi-format-super
 const BTN_OP_1DIV = new Btn({key: 'OP_1DIV', label: '⅟', value: '1DIV', type: MODIFICATORE})
 
 const BTN_POINT = new Btn({key: 'POINT', label: ',', value: 'PUNTODECIMALE', type: PUNTODECIMALE})
-const BTN_SIGN = new Btn({key: 'SIGN', label: '±', value: 'INVERTI', type: MODIFICATORE})
+const BTN_SIGN = new Btn({key: 'SIGN', label: '±', value: 'TOGGLESEGNO', type: TOGGLESEGNO})
 
 const BTN_RESULT = new Btn({key: 'RESULT', label: '=', icon: 'mdi-equal', value: 'RISULTATO', type: EQUAL})
 

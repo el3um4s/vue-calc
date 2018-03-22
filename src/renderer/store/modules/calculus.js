@@ -4,6 +4,7 @@ import { Decimal } from 'decimal.js'
 const NUMBER = 'NUMBER'
 const OPERAZIONEBASE = 'OPERAZIONEBASE'
 const PUNTODECIMALE = 'PUNTODECIMALE'
+const TOGGLESEGNO = 'TOGGLESEGNO'
 // const OPERATOR = 'operator'
 // const CLEAR = 'clear'
 // const EQUAL = 'equal'
@@ -17,15 +18,6 @@ function puntoDecimale () {
   const numIn = parseFloat(1 / 2)
   const strx = numIn.toLocaleString(state.formatNumber)
   return strx.substr(1, 1)
-}
-
-const state = {
-  formatNumber: 'it',
-  inputDec: [],
-  resultDec: new Decimal(0), // il risultato dell'operazione
-  inputText: '',
-  listOperationDec: [],
-  decimalPlaces: 10 // il numero di cifre mostrate dal display
 }
 
 function aggiungiInputAInputDec (obj) {
@@ -53,6 +45,10 @@ class Input {
     return this.type === PUNTODECIMALE
   }
 
+  isSegnoNegativo (obj) {
+    return this.type === TOGGLESEGNO
+  }
+
   isOperazioneBase (obj) {
     return this.type === OPERAZIONEBASE
   }
@@ -70,7 +66,7 @@ class Input {
   static aggiungiPuntoDecimale (x) {
     let z = new Input({
       symbol: x.conParteDecimale ? x.symbol : x.symbol + puntoDecimale(),
-      value: x.conParteDecimale ? x.value : x.value + puntoDecimale(),
+      value: x.conParteDecimale ? x.value : x.value + '.',
       type: x.type,
       conParteDecimale: true
     })
@@ -89,45 +85,31 @@ class Input {
 }
 
 // FUNZIONE CHE CALCOLA IL RISULTATO DELL'OPERAZIONE
-// function calcolaDec (elements) {
-//   if (elements.length === 0) return
-//   let decimal = null
-//   for (let i = 0; i < elements.length; i++) {
-//     const type = elements[i].type
-//     if (i === 0 && type === NUMBER) {
-//       decimal = elements[i]
-//     } else if (i < elements.length - 1) {
-//       const value = elements[i].value
-//       if (type === OPERATOR) {
-//         decimal = decimal[value](elements[i + 1])
-//         i += 1
-//       }
-//     }
-//   }
-//   state.resultDec = decimal
-// }
+function calcolaRisultato () {
+  const listaInput = state.inputDec
+  // se non ci sono operazioni o numeri inseriti allora non occorre fare nulla
+  if (listaInput.length === 0) return
+  // se invece ci sono operazioni o numeri inseriti allora inizio a fare i conti
+  let decimal = null
+  for (let i = 0; i < listaInput.length; i++) {
+    if (i === 0 && listaInput[i].isNumber()) {
+      decimal = new Decimal(listaInput[i].value)
+    } else if (i < listaInput.length - 1) {
+      if (listaInput[i].isOperazioneBase()) {
+        console.log()
+        decimal = decimal[listaInput[i].value](new Decimal(listaInput[i + 1].value))
+        i += 1
+      }
+    }
+  }
+  console.log(decimal)
+  return decimal
+}
 // FINE DELLA FUNZIONE CHE CALCOLA IL RISULTATO DELL'OPERAZIONE
 
-// GETTERS
-const getters = {
-  getRisultatoDec () {
-    return formatoRisultato(state.resultDec)
-  },
-  getInputTextDec () {
-    const inputText = state.inputDec.map(function (item) {
-      if (item.type === NUMBER) {
-        return item.symbol
-      }
-      return item.symbol
-    })
-    return inputText.join(' ')
-  },
-  getListOperationDec () {
-    return state.listOperationDec
-  }
-}
-// FINE GETTERS
-
+// trasforma il decimale con il risultato in una stringa con il numero nel formato
+// locale impostato in state.formatNumber e con tante cifre decimali quante impostate
+// su state.decimalPlaces
 function formatoRisultato (x) {
   const y = x.truncated()
   const z = x.minus(y)
@@ -145,29 +127,38 @@ function formatoRisultato (x) {
   }
 }
 
-// function formatoNumero (x) {
-//   if (x.conDecimale === NESSUNDECIMALE) {
-//     return x.toNumber().toLocaleString(state.formatNumber)
-//   }
-//   if (x.conDecimale === DECIMALEIMPOSTATO) {
-//     // const y = x.truncated()
-//     const parteIntera = x.parteIntera.toNumber().toLocaleString(state.formatNumber, {minimumFractionDigits: 0})
-//     const parteDecimale = '0'
-//     const segno = x.isNegative && x.parteIntera.isZero() ? '-' : ''
-//     return segno + parteIntera + puntoDecimale() + parteDecimale
-//     // return x.toNumber().toLocaleString(state.formatNumber)
-//   }
-//   if (x.conDecimale === DECIMALEINSERITO) {
-//     // const y = x.truncated()
-//     // const parteIntera = y.toNumber().toLocaleString(state.formatNumber, {minimumFractionDigits: 0})
-//     const parteIntera = x.parteIntera.toNumber().toLocaleString(state.formatNumber, {minimumFractionDigits: 0})
-//     // const parteIntera = x.parteIntera
-//     const parteDecimale = x.parteDecimale.substring(0, state.decimalPlaces)
-//     const segno = x.isNegative && x.parteIntera.isZero() ? '-' : ''
-//     return segno + parteIntera + puntoDecimale() + parteDecimale
-//     // return x.toNumber().toLocaleString(state.formatNumber)
-//   }
-// }
+// STATE (VUEX)
+const state = {
+  formatNumber: 'it',
+  inputDec: [],
+  resultDec: new Decimal(0), // il risultato dell'operazione
+  inputText: '',
+  listOperationDec: [],
+  decimalPlaces: 10 // il numero di cifre mostrate dal display
+}
+// FINE STATE (VUEX)
+
+// GETTERS
+const getters = {
+  getRisultatoDec () {
+    console.log('risultato')
+    console.log(state.resultDec)
+    return formatoRisultato(state.resultDec)
+  },
+  getInputTextDec () {
+    const inputText = state.inputDec.map(function (item) {
+      if (item.type === NUMBER) {
+        return item.symbol
+      }
+      return item.symbol
+    })
+    return inputText.join(' ')
+  },
+  getListOperationDec () {
+    return state.listOperationDec
+  }
+}
+// FINE GETTERS
 
 const mutations = {
   addInput (state, payload) {
@@ -191,7 +182,6 @@ const mutations = {
         const datoTemp = Input.aggiungiPuntoDecimale(Input.restituisciNumeroDecimal(0))
         aggiungiInputAInputDec(datoTemp)
       }
-      // TODO: il nuovo dato è il segno negativo
     } else { // se invece c'è un dato già inserito valuta il da farsi
       // se il datoPrecedente è un NUMBER
       if (datoPrecedente.isNumber()) {
@@ -227,7 +217,7 @@ const mutations = {
         }
       }
     }
-    // calcolaDec(state.inputDec)
+    state.resultDec = calcolaRisultato()
   }
 }
 
