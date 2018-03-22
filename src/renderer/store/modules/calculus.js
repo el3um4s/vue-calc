@@ -11,6 +11,12 @@ const NESSUNDECIMALE = 'nessun decimale'
 const DECIMALEIMPOSTATO = 'decimale impostato'
 const DECIMALEINSERITO = 'decimale inserito'
 
+function puntoDecimale () {
+  const numIn = parseFloat(1 / 2)
+  const strx = numIn.toLocaleString(state.formatNumber)
+  return strx.substr(1, 1)
+}
+
 const state = {
   formatNumber: 'it',
   inputDec: [],
@@ -18,6 +24,15 @@ const state = {
   inputText: '',
   listOperationDec: [],
   decimalPlaces: 10 // il numero di cifre mostrate dal display
+}
+
+function aggiungiInputAInputDec (obj) {
+  state.inputDec.push(obj)
+}
+
+function sostituisciUltimoInput (obj) {
+  state.inputDec.pop()
+  state.inputDec.push(obj)
 }
 
 class Input {
@@ -32,11 +47,32 @@ class Input {
     return this.type === NUMBER
   }
 
-  static unisciNumero (objX, objY) {
-    if (!objX.isNumber() || !objY.isNumber()) {
-      return false
-    }
-    return true
+  isPuntoDecimale (obj) {
+    return this.value === 'PUNTODECIMALE'
+  }
+
+  isOperazioneBase (obj) {
+    return this.value === 'operazionebase'
+  }
+
+  static unisciNumero (x, y) {
+    let z = new Input({
+      symbol: x.symbol + y.symbol,
+      value: x.value + y.value,
+      type: x.type,
+      conParteDecimale: x.conParteDecimale
+    })
+    return z
+  }
+
+  static aggiungiPuntoDecimale (x) {
+    let z = new Input({
+      symbol: x.conParteDecimale ? x.symbol : x.symbol + puntoDecimale(),
+      value: x.conParteDecimale ? x.value : x.value + puntoDecimale(),
+      type: x.type,
+      conParteDecimale: true
+    })
+    return z
   }
 }
 
@@ -121,11 +157,7 @@ function formatoNumero (x) {
   }
 }
 
-function puntoDecimale () {
-  const numIn = parseFloat(1 / 2)
-  const strx = numIn.toLocaleString(state.formatNumber)
-  return strx.substr(1, 1)
-}
+
 
 function aggiungiInput (input) {
   console.log('input passato su aggiungiInput')
@@ -229,15 +261,27 @@ function eliminaUltimoInputIntero () {
   state.inputDec.pop()
 }
 
-
 const mutations = {
   addInput (state, payload) {
-    console.log(payload)
-    let nuovoDato = new Input(payload)
-    console.log(nuovoDato)
-    console.log(nuovoDato.isNumber())
-    console.log('unisciNumero')
-    console.log(Input.unisciNumero(nuovoDato, nuovoDato))
+    const datoNuovo = new Input(payload)
+
+    // calcolo la lunghezza di state.inputDec per capire se è il primo
+    // dato inserito o se ce ne sono altri prima
+    // inoltre uso il numero per ricavarmi i valori già inseriti
+    const indiceNuovoDato = state.inputDec.length
+    const thereIsDatoPrecedente = indiceNuovoDato > 0
+    const datoPrecedente = thereIsDatoPrecedente ? state.inputDec[indiceNuovoDato - 1] : 0
+
+    console.log(datoNuovo)
+    console.log(datoPrecedente)
+
+    if (!thereIsDatoPrecedente) {
+      aggiungiInputAInputDec(datoNuovo)
+    } else {
+      const datoTemp = Input.unisciNumero(datoPrecedente, datoNuovo)
+      sostituisciUltimoInput(datoTemp)
+    }
+
     // const lengthInput = state.inputDec.length
     // const inputPrec = lengthInput > 0 ? lengthInput - 1 : 0
     // const typePrec = lengthInput > 0 ? state.inputDec[lengthInput - 1].type : '-'

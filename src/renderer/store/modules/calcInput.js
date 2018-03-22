@@ -1,5 +1,5 @@
 const NUMBER = 'number'
-const OPERATOR = 'operator'
+const OPERAZIONEBASE = 'operazionebase'
 const CLEAR = 'clear'
 const EQUAL = 'equal'
 const MODIFICATORE = 'modifier'
@@ -31,16 +31,16 @@ const BTN_7 = new Btn({key: 'N7', label: '7', value: '7', type: NUMBER})
 const BTN_8 = new Btn({key: 'N8', label: '8', value: '8', type: NUMBER})
 const BTN_9 = new Btn({key: 'N9', label: '9', value: '9', type: NUMBER})
 
-const BTN_DIVIDE = new Btn({key: 'DIVIDE', label: '÷', icon: 'mdi-division', value: 'div', type: OPERATOR})
-const BTN_MOLT = new Btn({key: 'MOLT', label: '*', icon: 'mdi-multiplication', value: 'mul', type: OPERATOR})
-const BTN_MINUS = new Btn({key: 'MINUS', label: '-', value: 'sub', type: OPERATOR})
-const BTN_PLUS = new Btn({key: 'PLUS', label: '+', icon: 'mdi-plus', value: 'add', type: OPERATOR})
+const BTN_DIVIDE = new Btn({key: 'DIVIDE', label: '÷', icon: 'mdi-division', value: 'div', type: OPERAZIONEBASE})
+const BTN_MOLT = new Btn({key: 'MOLT', label: '*', icon: 'mdi-multiplication', value: 'mul', type: OPERAZIONEBASE})
+const BTN_MINUS = new Btn({key: 'MINUS', label: '-', value: 'sub', type: OPERAZIONEBASE})
+const BTN_PLUS = new Btn({key: 'PLUS', label: '+', icon: 'mdi-plus', value: 'add', type: OPERAZIONEBASE})
 const BTN_OP_PERC = new Btn({key: 'OP_PERC', label: '%', icon: 'mdi-percent', value: 'PERCENTUALE', type: MODIFICATORE})
 const BTN_OP_SQUARE = new Btn({key: 'OP_SQUARE', label: '√', icon: 'mdi-square-root', value: 'sqrt', type: MODIFICATORE})
 const BTN_OP_POT = new Btn({key: 'OP_POT', label: 'x²', icon: 'mdi-format-superscript', value: 'ELEVA', symbol: '²', type: MODIFICATORE})
 const BTN_OP_1DIV = new Btn({key: 'OP_1DIV', label: '⅟', value: '1DIV', type: MODIFICATORE})
 
-const BTN_POINT = new Btn({key: 'POINT', label: ',', value: 'DECIMALE', type: MODIFICATORE})
+const BTN_POINT = new Btn({key: 'POINT', label: ',', value: 'PUNTODECIMALE', type: MODIFICATORE})
 const BTN_SIGN = new Btn({key: 'SIGN', label: '±', value: 'INVERTI', type: MODIFICATORE})
 
 const BTN_RESULT = new Btn({key: 'RESULT', label: '=', icon: 'mdi-equal', value: 'RISULTATO', type: EQUAL})
