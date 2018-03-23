@@ -5,14 +5,10 @@ const NUMBER = 'NUMBER'
 const OPERAZIONEBASE = 'OPERAZIONEBASE'
 const PUNTODECIMALE = 'PUNTODECIMALE'
 const TOGGLESEGNO = 'TOGGLESEGNO'
-// const OPERATOR = 'operator'
+const EQUAL = 'equal'
+const PERCENTUALE = 'PERCENTUALE'
 // const CLEAR = 'clear'
-// const EQUAL = 'equal'
-// const MODIFICATORE = 'modifier'
-
-// const NESSUNDECIMALE = 'nessun decimale'
-// const DECIMALEIMPOSTATO = 'decimale impostato'
-// const DECIMALEINSERITO = 'decimale inserito'
+// const ELIMINAULTIMOCARATTERE = 'ELIMINAULTIMOCARATTERE'
 
 function puntoDecimale () {
   const numIn = parseFloat(1 / 2)
@@ -29,12 +25,17 @@ function sostituisciUltimoInput (obj) {
   state.inputDec.push(obj)
 }
 
+function eliminaUltimoInput () {
+  state.inputDec.pop()
+}
+
 class Input {
   constructor (obj) {
     this.symbol = obj.symbol
     this.value = obj.value
     this.type = obj.type
     this.conParteDecimale = obj.conParteDecimale
+    this.numeroNegativo = obj.numeroNegativo
   }
 
   isNumber (obj) {
@@ -53,32 +54,80 @@ class Input {
     return this.type === OPERAZIONEBASE
   }
 
+  isSegnoUguale (obj) {
+    return this.type === EQUAL
+  }
+
+  isSegnoPercentuale (obj) {
+    return this.type === PERCENTUALE
+  }
+
   static unisciNumero (x, y) {
-    let z = new Input({
+    const z = new Input({
       symbol: x.symbol + y.symbol,
       value: x.value + y.value,
       type: x.type,
-      conParteDecimale: x.conParteDecimale
+      conParteDecimale: x.conParteDecimale,
+      numeroNegativo: x.numeroNegativo
     })
     return z
   }
 
   static aggiungiPuntoDecimale (x) {
-    let z = new Input({
+    const z = new Input({
       symbol: x.conParteDecimale ? x.symbol : x.symbol + puntoDecimale(),
       value: x.conParteDecimale ? x.value : x.value + '.',
       type: x.type,
-      conParteDecimale: true
+      conParteDecimale: true,
+      numeroNegativo: x.numeroNegativo
+    })
+    return z
+  }
+
+  static toogleSegnoNumero (x) {
+    const z = new Input({
+      symbol: x.numeroNegativo ? x.symbol.substring(1) : '-' + x.symbol,
+      value: x.numeroNegativo ? x.value.substring(1) : '-' + x.value,
+      type: x.type,
+      conParteDecimale: x.conParteDecimale,
+      numeroNegativo: !x.numeroNegativo
+    })
+    return z
+  }
+
+  static dividiPerCento (x) {
+    // per dividere per cento sposto il punto decimale di due posizioni verso destra
+    const {symbol, value, type, conParteDecimale, numeroNegativo} = x
+    let numeroCifre = value.length
+    let newValue = numeroNegativo ? value.substring(1) : value
+    let newSymbol = numeroNegativo ? symbol.substring(1) : symbol
+
+    // va gestito il caso di numero senza decimale
+    let positionPuntoDecimale = value.lastIndexOf('.')
+    newValue = newValue.substring(0, positionPuntoDecimale) + newValue.substring(positionPuntoDecimale + 1)
+    newSymbol = newSymbol.substring(0, positionPuntoDecimale) + newSymbol.substring(positionPuntoDecimale + 1)
+
+    console.log(numeroCifre + ' ' + newValue + ' ' + newSymbol)
+    // controlla quante cifre ci sono prima del punto decimale
+    // se sono meno di 2 allora si va nei numeri 00virgola
+    // se sono più di 2 basta spostare la 00virgola
+    const z = new Input({
+      symbol: symbol,
+      value: value,
+      type: type,
+      conParteDecimale: conParteDecimale,
+      numeroNegativo: numeroNegativo
     })
     return z
   }
 
   static restituisciNumeroDecimal (x) {
-    let z = new Input({
+    const z = new Input({
       symbol: x.toString(),
       value: x.toString(),
       type: NUMBER,
-      conParteDecimale: false
+      conParteDecimale: false,
+      numeroNegativo: false
     })
     return z
   }
@@ -87,22 +136,20 @@ class Input {
 // FUNZIONE CHE CALCOLA IL RISULTATO DELL'OPERAZIONE
 function calcolaRisultato () {
   const listaInput = state.inputDec
+  let decimal = new Decimal(0)
   // se non ci sono operazioni o numeri inseriti allora non occorre fare nulla
-  if (listaInput.length === 0) return
+  if (listaInput.length === 0) return decimal
   // se invece ci sono operazioni o numeri inseriti allora inizio a fare i conti
-  let decimal = null
   for (let i = 0; i < listaInput.length; i++) {
     if (i === 0 && listaInput[i].isNumber()) {
       decimal = new Decimal(listaInput[i].value)
     } else if (i < listaInput.length - 1) {
       if (listaInput[i].isOperazioneBase()) {
-        console.log()
         decimal = decimal[listaInput[i].value](new Decimal(listaInput[i + 1].value))
         i += 1
       }
     }
   }
-  console.log(decimal)
   return decimal
 }
 // FINE DELLA FUNZIONE CHE CALCOLA IL RISULTATO DELL'OPERAZIONE
@@ -111,6 +158,9 @@ function calcolaRisultato () {
 // locale impostato in state.formatNumber e con tante cifre decimali quante impostate
 // su state.decimalPlaces
 function formatoRisultato (x) {
+  if (x.isNaN()) {
+    return 'NaN'
+  }
   const y = x.truncated()
   const z = x.minus(y)
   if (x.equals(y)) {
@@ -141,8 +191,6 @@ const state = {
 // GETTERS
 const getters = {
   getRisultatoDec () {
-    console.log('risultato')
-    console.log(state.resultDec)
     return formatoRisultato(state.resultDec)
   },
   getInputTextDec () {
@@ -199,6 +247,16 @@ const mutations = {
         if (datoNuovo.isOperazioneBase()) {
           aggiungiInputAInputDec(datoNuovo)
         }
+        // se il nuovo dato è il segno di ± allora inverto il segno del numero
+        if (datoNuovo.isSegnoNegativo()) {
+          const datoTemp = Input.toogleSegnoNumero(datoPrecedente)
+          sostituisciUltimoInput(datoTemp)
+        }
+        // se il nuovo dato è il segno percenuale allora divido il numero per 100
+        if (datoNuovo.isSegnoPercentuale()) {
+          const datoTemp = Input.dividiPerCento(datoPrecedente)
+          sostituisciUltimoInput(datoTemp)
+        }
       }
       // se il datoPrecedente è un OPERAZIONEBASE
       if (datoPrecedente.isOperazioneBase()) {
@@ -218,6 +276,16 @@ const mutations = {
       }
     }
     state.resultDec = calcolaRisultato()
+    // se il nuovo dato è il segno = allora chiudi l'operazione
+    if (datoNuovo.isSegnoUguale()) {
+      if (datoPrecedente.isOperazioneBase()) {
+        eliminaUltimoInput()
+      }
+      aggiungiInputAInputDec(datoNuovo)
+      state.listOperationDec.unshift(getters.getInputTextDec() + ' ' + formatoRisultato(state.resultDec))
+      state.inputDec = []
+      state.resultDec = calcolaRisultato()
+    }
   }
 }
 
