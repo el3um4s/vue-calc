@@ -1,26 +1,35 @@
 <template>
-  <div>
-    <v-layout column>
-      <h3>Vue-Calv</h3>
-      <div>versione {{ versionNumber }}</div>
-      <div>&copy; {{ new Date().getFullYear() }} - Strani Anelli</div>
-    </v-layout>
-    <v-layout column>
-      <div>github: </div>
-      <div>homepage: </div>
-    </v-layout>
-    <v-layout column>
-      <div>Created by StraniAnelli.com with:</div>
-      <ul>
-        <li>VueJS</li>
-        <li>Vuetify</li>
-        <li>Electron-vue (https://github.com/vuetifyjs/electron)</li>
-        <li>decimal.js</li>
-        <li>font Roboto</li>
-        <li>font mina</li>
-      </ul>
-    </v-layout>
-  </div>
+  <v-container class="infosview">
+    <v-card>
+      <v-card-text>
+        <span class="title">Vue Calc</span>
+        <br />
+        <span class="subheading">A Simple VueJS's Calculator</span>
+        <br /><br />
+        <span class="body-1">version <strong>{{ versionNumber }}</strong></span>
+        <br />
+        <span class="body-1">license <strong>MIT</strong>  &copy; 2017-{{ new Date().getFullYear() }} - Samuele de Tomasi</span>
+      </v-card-text>
+    </v-card>
+    <v-card>
+      <v-card-text>
+        <span class="body-1"><strong>GitHub</strong>: <span class="openLink" @click.prevent="openLink('https://github.com/el3um4s/vue-calc')">el3um4s/vue-calc</span></span>
+      </v-card-text>
+    </v-card>
+    <v-card>
+      <v-card-text>
+        <span class="body-1"><strong>Created with:</strong></span>
+        <div class="elenco">
+          <li class="itemInElenco openLink" @click.prevent="openLink('https://vuejs.org/')">Vue.js</li>
+          <li class="itemInElenco openLink" @click.prevent="openLink('https://vuetifyjs.com/')">Vuetify</li>
+          <li class="itemInElenco openLink" @click.prevent="openLink('https://github.com/vuetifyjs/electron')">Electron-vue</li>
+          <li class="itemInElenco openLink" @click.prevent="openLink('http://mikemcl.github.io/decimal.js/')">decimal.js</li>
+          <li class="itemInElenco openLink" @click.prevent="openLink('https://fonts.google.com/specimen/Roboto')">Google Font Roboto</li>
+          <li class="itemInElenco openLink" @click.prevent="openLink('https://fonts.google.com/specimen/Mina')">Google Font Mina</li>
+        </div>
+      </v-card-text>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
@@ -28,14 +37,28 @@ import {
   mapGetters
 } from 'vuex'
 
+const { shell } = require('electron')
+
 export default {
   computed: {
     ...mapGetters('menu', {
       versionNumber: 'versionNumber'
     })
+  },
+  methods: {
+    openLink (link) {
+      shell.openExternal(link)
+    }
   }
 }
 </script>
 
 <style scoped>
+  .openLink {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .itemInElenco {
+    padding-left: 16px;
+  }
 </style>
