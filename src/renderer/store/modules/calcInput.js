@@ -2,10 +2,11 @@ const NUMBER = 'NUMBER'
 const OPERAZIONEBASE = 'OPERAZIONEBASE'
 const PUNTODECIMALE = 'PUNTODECIMALE'
 const TOGGLESEGNO = 'TOGGLESEGNO'
-const CLEAR = 'clear'
-const EQUAL = 'equal'
+const CLEAR = 'CLEAR'
+const EQUAL = 'EQUAL'
 const PERCENTUALE = 'PERCENTUALE'
-const ELIMINAULTIMOCARATTERE = 'ELIMINAULTIMOCARATTERE'
+// const ELIMINAULTIMOCARATTERE = 'ELIMINAULTIMOCARATTERE'
+const ELIMINATUTTO = 'ELIMINATUTTO'
 
 class Btn {
   constructor (obj) {
@@ -47,12 +48,14 @@ const BTN_SIGN = new Btn({key: 'SIGN', label: '±', value: 'TOGGLESEGNO', type: 
 
 const BTN_RESULT = new Btn({key: 'RESULT', label: '=', icon: 'mdi-equal', value: 'RISULTATO', type: EQUAL})
 
-const BTN_OP_C = new Btn({key: 'OP_C', label: 'C', value: 'CANCELLA', type: CLEAR})
-const BTN_OP_DEL = new Btn({key: 'OP_DEL', label: '<-', icon: 'mdi-backspace', value: 'ELIMINAULTIMOCARATTERE', symbol: 'D', type: ELIMINAULTIMOCARATTERE})
+// const BTN_OP_C = new Btn({key: 'OP_C', label: 'C', value: 'CANCELLA', type: CLEAR})
+// const BTN_OP_DEL = new Btn({key: 'OP_DEL', label: '<-', icon: 'mdi-backspace', value: 'ELIMINAULTIMOCARATTERE', symbol: 'D', type: ELIMINAULTIMOCARATTERE})
+const BTN_OP_CE = new Btn({key: 'OP_CE', label: 'CE', value: 'ELIMINATUTTO', type: ELIMINATUTTO})
+const BTN_OP_DEL = new Btn({key: 'OP_DEL', label: '<-', icon: 'mdi-backspace', value: 'CANCELLA', symbol: 'D', type: CLEAR})
 
 const state = {
   calcStandard: [
-    [BTN_OP_C, BTN_OP_DEL, BTN_OP_PERC, BTN_DIVIDE],
+    [BTN_OP_CE, BTN_OP_DEL, BTN_OP_PERC, BTN_DIVIDE],
     [BTN_7, BTN_8, BTN_9, BTN_MOLT],
     [BTN_4, BTN_5, BTN_6, BTN_MINUS],
     [BTN_1, BTN_2, BTN_3, BTN_PLUS],

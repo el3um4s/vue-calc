@@ -27,6 +27,11 @@ export default new Router({
       path: '/settings',
       name: 'settings',
       component: require('@/components/SettingsView').default
+    },
+    {
+      path: '/informazioni',
+      name: 'informazioni',
+      component: require('@/components/InfosView').default
     }
   ]
 })

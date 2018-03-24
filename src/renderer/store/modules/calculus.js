@@ -5,10 +5,10 @@ const NUMBER = 'NUMBER'
 const OPERAZIONEBASE = 'OPERAZIONEBASE'
 const PUNTODECIMALE = 'PUNTODECIMALE'
 const TOGGLESEGNO = 'TOGGLESEGNO'
-const EQUAL = 'equal'
+const EQUAL = 'EQUAL'
 const PERCENTUALE = 'PERCENTUALE'
-// const CLEAR = 'clear'
-// const ELIMINAULTIMOCARATTERE = 'ELIMINAULTIMOCARATTERE'
+const CLEAR = 'CLEAR'
+const ELIMINATUTTO = 'ELIMINATUTTO'
 
 function puntoDecimale () {
   const numIn = parseFloat(1 / 2)
@@ -26,7 +26,14 @@ function sostituisciUltimoInput (obj) {
 }
 
 function eliminaUltimoInput () {
-  state.inputDec.pop()
+  if (state.inputDec.length > 0) {
+    state.inputDec.pop()
+  }
+}
+
+function eliminatTutto () {
+  state.inputDec = []
+  state.listOperationDec = []
 }
 
 class Input {
@@ -60,6 +67,14 @@ class Input {
 
   isSegnoPercentuale (obj) {
     return this.type === PERCENTUALE
+  }
+
+  isEliminaUltimoInput (obj) {
+    return this.type === CLEAR
+  }
+
+  isEliminaTutto (obj) {
+    return this.type === ELIMINATUTTO
   }
 
   static unisciNumero (x, y) {
@@ -96,9 +111,10 @@ class Input {
   }
 
   static dividiPerCento (x) {
-    // per dividere per cento sposto il punto decimale di due posizioni verso destra
+    // per dividere per cento sposto il punto decimale di due posizioni verso sinistra
     const {symbol, value, type, conParteDecimale, numeroNegativo} = x
-    let numeroCifre = value.length
+    let numeroCifre = numeroNegativo ? value.length - 1 : value.length
+    numeroCifre = conParteDecimale ? value.length - 1 : value.length
     let newValue = numeroNegativo ? value.substring(1) : value
     let newSymbol = numeroNegativo ? symbol.substring(1) : symbol
 
@@ -107,27 +123,41 @@ class Input {
     newValue = newValue.substring(0, positionPuntoDecimale) + newValue.substring(positionPuntoDecimale + 1)
     newSymbol = newSymbol.substring(0, positionPuntoDecimale) + newSymbol.substring(positionPuntoDecimale + 1)
 
-    console.log(numeroCifre + ' ' + newValue + ' ' + newSymbol)
     // controlla quante cifre ci sono prima del punto decimale
-    // se sono meno di 2 allora si va nei numeri 00virgola
-    // se sono più di 2 basta spostare la 00virgola
+    // se non c'è il punto decimale
+    positionPuntoDecimale = positionPuntoDecimale === -1 ? numeroCifre : positionPuntoDecimale
+
+    switch (positionPuntoDecimale) {
+      case 1:
+        newValue = '0.0' + newValue
+        newSymbol = '0' + puntoDecimale() + '0' + newSymbol
+        break
+      case 2:
+        newValue = '0.' + newValue
+        newSymbol = '0' + puntoDecimale() + newSymbol
+        break
+      default:
+        newValue = newValue.substring(0, positionPuntoDecimale - 2) + '.' + newValue.substring(positionPuntoDecimale - 2)
+        newSymbol = newSymbol.substring(0, positionPuntoDecimale - 2) + puntoDecimale() + newSymbol.substring(positionPuntoDecimale - 2)
+    }
+
     const z = new Input({
-      symbol: symbol,
-      value: value,
+      symbol: numeroNegativo ? '-' + newSymbol : newSymbol,
+      value: numeroNegativo ? '-' + newValue : newValue,
       type: type,
-      conParteDecimale: conParteDecimale,
+      conParteDecimale: true,
       numeroNegativo: numeroNegativo
     })
     return z
   }
 
-  static restituisciNumeroDecimal (x) {
+  static restituisciNumeroDecimal (x, conParteDecimale = false, numeroNegativo = false) {
     const z = new Input({
       symbol: x.toString(),
       value: x.toString(),
       type: NUMBER,
-      conParteDecimale: false,
-      numeroNegativo: false
+      conParteDecimale: conParteDecimale,
+      numeroNegativo: numeroNegativo
     })
     return z
   }
@@ -177,6 +207,15 @@ function formatoRisultato (x) {
   }
 }
 
+function formatoInput (x) {
+  const xTemp = new Decimal(x.value)
+  const y = xTemp.truncated()
+  const xStringParteIntera = y.toNumber().toLocaleString(state.formatNumber, {minimumFractionDigits: 0})
+  const xStringSegno = x.numeroNegativo ? '-' : ''
+  const xStringParteDecimale = x.conParteDecimale ? puntoDecimale() + x.value.substring(x.value.lastIndexOf('.') + 1) : ''
+  return xStringSegno + xStringParteIntera + xStringParteDecimale
+}
+
 // STATE (VUEX)
 const state = {
   formatNumber: 'it',
@@ -196,7 +235,8 @@ const getters = {
   getInputTextDec () {
     const inputText = state.inputDec.map(function (item) {
       if (item.type === NUMBER) {
-        return item.symbol
+        // return item.symbol
+        return formatoInput(item)
       }
       return item.symbol
     })
@@ -253,9 +293,20 @@ const mutations = {
           sostituisciUltimoInput(datoTemp)
         }
         // se il nuovo dato è il segno percenuale allora divido il numero per 100
+        // e lo moltiplico per il numero inserito in precedenza
         if (datoNuovo.isSegnoPercentuale()) {
-          const datoTemp = Input.dividiPerCento(datoPrecedente)
-          sostituisciUltimoInput(datoTemp)
+          if (indiceNuovoDato === 1) {
+            const datoTemp = Input.dividiPerCento(datoPrecedente)
+            sostituisciUltimoInput(datoTemp)
+          } else {
+            const datoPrecedenteX2 = state.inputDec[indiceNuovoDato - 3]
+            const datoPrecedenteX2UnoPerCento = Input.dividiPerCento(datoPrecedenteX2)
+            const datoPrecedenteX2UnoPerCentoDecimal = new Decimal(datoPrecedenteX2UnoPerCento.value)
+            const datoPrecedenteDecimal = new Decimal(datoPrecedente.value)
+            const datoTemp = datoPrecedenteDecimal.mul(datoPrecedenteX2UnoPerCentoDecimal)
+            const datoTemp2 = Input.restituisciNumeroDecimal(datoTemp, true, datoPrecedenteX2.numeroNegativo)
+            sostituisciUltimoInput(datoTemp2)
+          }
         }
       }
       // se il datoPrecedente è un OPERAZIONEBASE
@@ -275,9 +326,20 @@ const mutations = {
         }
       }
     }
+
+    if (datoNuovo.isEliminaUltimoInput()) {
+      eliminaUltimoInput()
+    }
+
+    if (datoNuovo.isEliminaTutto()) {
+      eliminatTutto()
+    }
+
+    // CALOLA IL RISULTATO
     state.resultDec = calcolaRisultato()
+
     // se il nuovo dato è il segno = allora chiudi l'operazione
-    if (datoNuovo.isSegnoUguale()) {
+    if (datoNuovo.isSegnoUguale() && thereIsDatoPrecedente) {
       if (datoPrecedente.isOperazioneBase()) {
         eliminaUltimoInput()
       }

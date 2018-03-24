@@ -1,6 +1,6 @@
 const state = {
   drawer: false,
-  version: '0.0.5',
+  version: '0.18.03.24',
   items: [
     // {
     //   header: 'Formato'
@@ -10,19 +10,24 @@ const state = {
       icon: 'mdi-calculator',
       to: 'simple'
     },
-    { title: 'Date',
-      subtitle: 'Calcola la distanza tra due date',
-      icon: 'mdi-calendar-range',
-      to: 'date'
-    },
+    // { title: 'Date',
+    //   subtitle: 'Calcola la distanza tra due date',
+    //   icon: 'mdi-calendar-range',
+    //   to: 'date'
+    // },
     {
       divider: true
     },
     {
       title: 'Impostazioni',
-      subtitle: 'Scegli il tema',
+      subtitle: 'Scegli tema, formato, decimali',
       icon: 'mdi-settings',
       to: 'settings'
+    },
+    {
+      title: 'Informazioni',
+      icon: 'mdi-information-variant',
+      to: 'informazioni'
     }
   ]
 }
