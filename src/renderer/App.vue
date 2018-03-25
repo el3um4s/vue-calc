@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app dark>
     <appToolbarENavigation></appToolbarENavigation>
     <v-content fill-height>
         <v-fade-transition mode="out-in">

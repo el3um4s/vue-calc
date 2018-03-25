@@ -218,12 +218,12 @@ function formatoInput (x) {
 
 // STATE (VUEX)
 const state = {
-  formatNumber: 'it',
+  formatNumber: 'it-IT',
   inputDec: [],
   resultDec: new Decimal(0), // il risultato dell'operazione
   inputText: '',
   listOperationDec: [],
-  decimalPlaces: 10 // il numero di cifre mostrate dal display
+  decimalPlaces: 5 // il numero di cifre mostrate dal display
 }
 // FINE STATE (VUEX)
 
@@ -244,11 +244,23 @@ const getters = {
   },
   getListOperationDec () {
     return state.listOperationDec
+  },
+  getFormatoNumero () {
+    return state.formatNumber
+  },
+  getPosizioniDecimali () {
+    return state.decimalPlaces
   }
 }
 // FINE GETTERS
 
 const mutations = {
+  cambiaFormatoNumero (state, payload) {
+    state.formatNumber = payload
+  },
+  cambiaNumeroDecimali (state, payload) {
+    state.decimalPlaces = Number(payload)
+  },
   addInput (state, payload) {
     const datoNuovo = new Input(payload)
 

@@ -1,6 +1,6 @@
 const state = {
   drawer: false,
-  version: '0.18.03.24',
+  version: '0.18.03.25',
   items: [
     // {
     //   header: 'Formato'

@@ -43,7 +43,7 @@ const BTN_PLUS = new Btn({key: 'PLUS', label: '+', icon: 'mdi-plus', value: 'add
 
 const BTN_OP_PERC = new Btn({key: 'OP_PERC', label: '%', icon: 'mdi-percent', value: 'PERCENTUALE', type: PERCENTUALE})
 
-const BTN_POINT = new Btn({key: 'POINT', label: ',', value: 'PUNTODECIMALE', type: PUNTODECIMALE})
+const BTN_POINT = new Btn({key: 'POINT', label: '.', value: 'PUNTODECIMALE', type: PUNTODECIMALE})
 const BTN_SIGN = new Btn({key: 'SIGN', label: '±', value: 'TOGGLESEGNO', type: TOGGLESEGNO})
 
 const BTN_RESULT = new Btn({key: 'RESULT', label: '=', icon: 'mdi-equal', value: 'RISULTATO', type: EQUAL})
