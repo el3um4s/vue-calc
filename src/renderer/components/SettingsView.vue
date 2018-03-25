@@ -5,7 +5,7 @@
       <v-select
           :items="elencoLingue"
           v-model="linguaSelezionata"
-          class="input-group--focused"
+          class="input-group"
           @input="aggiornaFormatoNumero"
           ></v-select>
     </v-list-tile>
@@ -26,7 +26,7 @@
       <v-select
           :items="elencoTemi"
           v-model="temaSelezionato"
-          class="input-group--focused"
+          class="input-group"
           @input="aggiornaTema"
           ></v-select>
     </v-list-tile>
@@ -42,20 +42,26 @@ export default {
       posizioniDecimali: 0,
       linguaSelezionata: 'it-IT',
       elencoLingue: ['it-IT', 'it-CH', 'en-GB', 'en-US', 'fr-FR', 'fr-CA', 'de-DE', 'pt-PT', 'pt-BR', 'es-ES'],
-      elencoTemi: ['chiaro', 'dark'],
-      temaSelezionato: 'chiaro'
+      elencoTemi: ['light', 'dark'],
+      temaSelezionato: 'light'
     }
   },
   computed: {
     ...mapGetters('calculus', {
       getFormatoNumero: 'getFormatoNumero',
       getPosizioniDecimali: 'getPosizioniDecimali'
+    }),
+    ...mapGetters('menu', {
+      getDarkTheme: 'darkTheme'
     })
   },
   methods: {
     ...mapMutations('calculus', {
       cambiaFormatoNumero: 'cambiaFormatoNumero',
       cambiaNumeroDecimali: 'cambiaNumeroDecimali'
+    }),
+    ...mapMutations('menu', {
+      cambiaTema: 'cambiaTema'
     }),
     aggiornaFormatoNumero () {
       this.cambiaFormatoNumero(this.linguaSelezionata)
@@ -64,18 +70,13 @@ export default {
       this.cambiaNumeroDecimali(this.posizioniDecimali)
     },
     aggiornaTema () {
-      const tema = this.temaSelezionato
-      switch (tema) {
-        case 'chiaro':
-          break
-        default:
-          break
-      }
+      this.cambiaTema(this.temaSelezionato === 'dark')
     }
   },
   mounted () {
     this.posizioniDecimali = this.getPosizioniDecimali
     this.linguaSelezionata = this.getFormatoNumero
+    this.temaSelezionato = this.getDarkTheme ? 'dark' : 'light'
   }
 }
 </script>

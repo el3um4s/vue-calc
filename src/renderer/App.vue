@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app :dark="darkTheme">
     <appToolbarENavigation></appToolbarENavigation>
     <v-content fill-height>
         <v-fade-transition mode="out-in">
@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import ToolbarENavigation from './components/UIview/ToolbarENavigation.vue'
 import Footer from './components/UIview/Footer.vue'
 
@@ -19,6 +21,11 @@ export default {
   components: {
     appToolbarENavigation: ToolbarENavigation,
     appFooter: Footer
+  },
+  computed: {
+    ...mapGetters('menu', {
+      darkTheme: 'darkTheme'
+    })
   }
 }
 </script>

@@ -1,4 +1,5 @@
 const state = {
+  dark: true,
   drawer: false,
   version: '0.18.03.25',
   items: [
@@ -41,12 +42,18 @@ const getters = {
   },
   menuItems (state) {
     return state.items
+  },
+  darkTheme (state) {
+    return state.dark
   }
 }
 
 const mutations = {
   drawerToggle (state) {
     state.drawer = !state.drawer
+  },
+  cambiaTema (state, payload) {
+    state.dark = payload
   }
 }
 
