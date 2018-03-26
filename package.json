@@ -1,6 +1,6 @@
 {
   "name": "vue-calc",
-  "version": "0.18.03.25",
+  "version": "0.18.03.26",
   "author": "el3um4s <el3um4s@gmail.com>",
   "description": "An electron-vue project",
   "license": "MIT",
@@ -57,10 +57,10 @@
     "axios": "^0.16.1",
     "decimal.js": "^9.0.1",
     "mdi": "^2.1.99",
-    "v-hotkey": "^0.2.0",
     "vue": "^2.4.2",
     "vue-electron": "^1.0.6",
     "vue-router": "^2.5.3",
+    "vue-shortkey": "^3.1.0",
     "vuetify": "1.0.0",
     "vuex": "^2.3.1"
   },

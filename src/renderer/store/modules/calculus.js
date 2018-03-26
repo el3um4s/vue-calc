@@ -211,9 +211,10 @@ function formatoInput (x) {
   const xTemp = new Decimal(x.value)
   const y = xTemp.truncated()
   const xStringParteIntera = y.toNumber().toLocaleString(state.formatNumber, {minimumFractionDigits: 0})
-  const xStringSegno = x.numeroNegativo ? '-' : ''
+  // const xStringSegno = x.numeroNegativo ? '-' : ''
   const xStringParteDecimale = x.conParteDecimale ? puntoDecimale() + x.value.substring(x.value.lastIndexOf('.') + 1) : ''
-  return xStringSegno + xStringParteIntera + xStringParteDecimale
+  return xStringParteIntera + xStringParteDecimale
+  // return xStringSegno + xStringParteIntera + xStringParteDecimale
 }
 
 // STATE (VUEX)
