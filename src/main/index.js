@@ -28,7 +28,8 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     minHeight: 550,
     // useContentSize: true,
-    minWidth: 340
+    minWidth: 340,
+    icon: require('path').join(__dirname, '/icons/png/64x64.png')
   })
 
   mainWindow.loadURL(winURL)
