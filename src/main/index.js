@@ -1,7 +1,8 @@
 'use strict'
 
 import { app, BrowserWindow } from 'electron'
-const path = require('path')
+// import { autoUpdater } from 'electron-updater'
+// const path = require('path')
 
 /**
  * Set `__static` path to static files in production
@@ -31,8 +32,7 @@ function createWindow () {
     width: 340,
     minHeight: 550,
     // useContentSize: true,
-    minWidth: 340,
-    icon: path.join(__dirname, '/assets/icons/png/64x64.png')
+    minWidth: 340
   })
 
   mainWindow.loadURL(winURL)
@@ -64,14 +64,12 @@ app.on('activate', () => {
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-electron-builder.html#auto-updating
  */
 
-/*
-import { autoUpdater } from 'electron-updater'
+// import { autoUpdater } from 'electron-updater'
 
-autoUpdater.on('update-downloaded', () => {
-  autoUpdater.quitAndInstall()
-})
-
-app.on('ready', () => {
-  if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
-})
- */
+// autoUpdater.on('update-downloaded', () => {
+//   autoUpdater.quitAndInstall()
+// })
+//
+// app.on('ready', () => {
+//   if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
+// })
