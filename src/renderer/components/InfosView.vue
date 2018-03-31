@@ -27,6 +27,7 @@
           <li class="itemInElenco openLink" @click.prevent="openLink('https://fonts.google.com/specimen/Roboto')">Google Font Roboto</li>
           <li class="itemInElenco openLink" @click.prevent="openLink('https://fonts.google.com/specimen/Mina')">Google Font Mina</li>
           <li class="itemInElenco openLink" @click.prevent="openLink('https://github.com/iFgR/vue-shortkey')">vue-shortkey</li>
+          <li class="itemInElenco openLink" @click.prevent="openLink('https://github.com/sindresorhus/electron-store')">electron-store</li>
         </div>
       </v-card-text>
     </v-card>

@@ -1,8 +1,15 @@
 'use strict'
 
 import { app, BrowserWindow } from 'electron'
-// import { autoUpdater } from 'electron-updater'
-// const path = require('path')
+
+const Impostazioni = require('electron-store')
+const impostazioni = new Impostazioni({
+  name: 'impostazioni',
+  defaults: {
+    windowBounds: { width: 340, height: 550 },
+    settings: { temaDark: 'dark', formatNumber: 'it-IT', decimalPlaces: 5 }
+  }
+})
 
 /**
  * Set `__static` path to static files in production
@@ -17,19 +24,22 @@ const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
+// impostazioni.set({
+//   windowBounds: {
+//     width: 340,
+//     height: 550
+//   }
+// })
+
 function createWindow () {
   /**
    * Initial window options
    */
-  // mainWindow = new BrowserWindow({
-  //   height: 563,
-  //   useContentSize: true,
-  //   width: 1000
-  // })
+  let { width, height } = impostazioni.get('windowBounds')
 
   mainWindow = new BrowserWindow({
-    height: 550,
-    width: 340,
+    height: height,
+    width: width,
     minHeight: 550,
     // useContentSize: true,
     minWidth: 340
@@ -39,6 +49,11 @@ function createWindow () {
 
   mainWindow.on('closed', () => {
     mainWindow = null
+  })
+
+  mainWindow.on('resize', () => {
+    let { width, height } = mainWindow.getBounds()
+    impostazioni.set('windowBounds', { width, height })
   })
 }
 
