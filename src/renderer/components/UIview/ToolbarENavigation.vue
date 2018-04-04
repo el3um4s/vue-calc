@@ -1,8 +1,15 @@
 <template>
   <div>
-  <v-toolbar fixed clipped-left app dense>
-    <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+  <v-toolbar fixed clipped-left app dense class="titlebar">
+    <v-toolbar-side-icon @click.stop="drawer = !drawer" class="cliccabile"></v-toolbar-side-icon>
     <v-toolbar-title>Vue Calc</v-toolbar-title>
+    <v-spacer></v-spacer>
+    <v-btn icon class="cliccabile puntatore" @click.stop="minimizza">
+      <v-icon>mdi-window-minimize</v-icon>
+    </v-btn>
+    <v-btn icon class="cliccabile puntatore" @click.stop="chiudi">
+      <v-icon>mdi-window-close</v-icon>
+    </v-btn>
   </v-toolbar>
   <v-navigation-drawer app fixed clipped v-model="drawer" temporary>
     <v-list two-line>
@@ -26,6 +33,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+const remote = require('electron').remote
 
 export default {
   data () {
@@ -37,9 +45,33 @@ export default {
     ...mapGetters('menu', {
       items: 'menuItems'
     })
+  },
+  methods: {
+    minimizza () {
+      const window = remote.getCurrentWindow()
+      window.minimize()
+    },
+    chiudi () {
+      const window = remote.getCurrentWindow()
+      window.close()
+    }
   }
 }
 </script>
 
-<style>
+<style scoped>
+
+.titlebar {
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+}
+
+.cliccabile {
+  -webkit-app-region: no-drag;
+}
+
+.puntatore {
+  cursor: pointer;
+}
+
 </style>
