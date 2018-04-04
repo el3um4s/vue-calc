@@ -36,13 +36,14 @@
 <script>
 import { mapGetters, mapMutations } from 'vuex'
 const Impostazioni = require('electron-store')
-const impostazioni = new Impostazioni({
-  name: 'impostazioni',
-  defaults: {
-    windowBounds: { width: 340, height: 550 },
-    settings: { temaDark: 'dark', formatNumber: 'it-IT', decimalPlaces: 5 }
-  }
-})
+const impostazioni = new Impostazioni()
+// const impostazioni = new Impostazioni({
+//   name: 'impostazioni',
+//   defaults: {
+//     windowBounds: { width: 340, height: 550 },
+//     settings: { temaDark: 'dark', formatNumber: 'it-IT', decimalPlaces: 5 }
+//   }
+// })
 
 export default {
   data () {

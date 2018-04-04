@@ -4,7 +4,7 @@ import { app, BrowserWindow } from 'electron'
 
 const Impostazioni = require('electron-store')
 const impostazioni = new Impostazioni({
-  name: 'impostazioni',
+  // name: 'impostazioni',
   defaults: {
     windowBounds: { width: 340, height: 550 },
     settings: { temaDark: 'dark', formatNumber: 'it-IT', decimalPlaces: 5 }
