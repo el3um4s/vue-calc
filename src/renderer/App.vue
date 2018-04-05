@@ -1,5 +1,5 @@
 <template>
-  <v-app :dark="darkTheme">
+  <v-app :dark="getDarkTheme">
     <appToolbarENavigation></appToolbarENavigation>
     <v-content fill-height>
         <v-fade-transition mode="out-in">
@@ -27,7 +27,8 @@ export default {
   },
   computed: {
     ...mapGetters('impostazioni', {
-      darkTheme: 'darkTheme'
+      getDarkTheme: 'darkTheme',
+      getLinguaApp: 'linguaApp'
     })
   },
   methods: {
@@ -36,13 +37,16 @@ export default {
       cambiaNumeroDecimali: 'cambiaNumeroDecimali'
     }),
     ...mapMutations('impostazioni', {
-      cambiaTema: 'cambiaTema'
+      cambiaTema: 'cambiaTema',
+      cambiaLingua: 'cambiaLingua'
     })
   },
   mounted () {
     this.cambiaFormatoNumero(impostazioni.get('settings.formatNumber'))
     this.cambiaNumeroDecimali(impostazioni.get('settings.decimalPlaces'))
     this.cambiaTema(impostazioni.get('settings.temaDark'))
+    this.cambiaLingua(impostazioni.get('settings.linguaApp'))
+    this.$inter.setCurrentLocale(impostazioni.get('settings.linguaApp'))
   }
 }
 </script>

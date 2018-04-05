@@ -66,6 +66,7 @@
     "npm": "^5.8.0",
     "vue": "^2.4.2",
     "vue-electron": "^1.0.6",
+    "vue-inter": "^3.0.0",
     "vue-router": "^2.5.3",
     "vue-shortkey": "^3.1.0",
     "vuetify": "1.0.0",

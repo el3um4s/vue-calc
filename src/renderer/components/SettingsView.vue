@@ -1,16 +1,26 @@
 <template>
   <v-list>
     <v-list-tile>
-      <v-subheader>Formato</v-subheader>
+      <v-subheader>
+        <format-message
+            path="impostazioni.formato"
+            default-message="Formato Numero"
+        ></format-message>
+      </v-subheader>
       <v-select
-          :items="elencoLingue"
-          v-model="linguaSelezionata"
+          :items="elencoFormatoDeiNumeri"
+          v-model="formatoNumeroSelezionato"
           class="input-group"
           @input="aggiornaFormatoNumero"
           ></v-select>
     </v-list-tile>
     <v-list-tile>
-      <v-subheader>Posizioni decimali</v-subheader>
+      <v-subheader>
+        <format-message
+            path="impostazioni.posizioniDecimali"
+            default-message="Decimali"
+        ></format-message>
+      </v-subheader>
       <v-text-field
           type="number"
           name="posizioniDecimali"
@@ -22,12 +32,31 @@
         </v-text-field>
     </v-list-tile>
     <v-list-tile>
-      <v-subheader>Tema</v-subheader>
+      <v-subheader>
+        <format-message
+            path="impostazioni.tema"
+            default-message="Tema"
+        ></format-message>
+      </v-subheader>
       <v-select
           :items="elencoTemi"
           v-model="temaSelezionato"
           class="input-group"
           @input="aggiornaTema"
+          ></v-select>
+    </v-list-tile>
+    <v-list-tile>
+      <v-subheader>
+        <format-message
+            path="impostazioni.lingua"
+            default-message="Lingua"
+        ></format-message>
+      </v-subheader>
+      <v-select
+          :items="elencoLingueApp"
+          v-model="linguaAppSelezionata"
+          class="input-group"
+          @input="aggiornaLinguaApp"
           ></v-select>
     </v-list-tile>
   </v-list>
@@ -42,10 +71,12 @@ export default {
   data () {
     return {
       posizioniDecimali: 0,
-      linguaSelezionata: 'it-IT',
-      elencoLingue: ['it-IT', 'it-CH', 'en-GB', 'en-US', 'fr-FR', 'fr-CA', 'de-DE', 'pt-PT', 'pt-BR', 'es-ES'],
-      elencoTemi: ['light', 'dark'],
-      temaSelezionato: 'dark'
+      formatoNumeroSelezionato: 'it-IT',
+      elencoFormatoDeiNumeri: ['it-IT', 'it-CH', 'en-GB', 'en-US', 'fr-FR', 'fr-CA', 'de-DE', 'pt-PT', 'pt-BR', 'es-ES'],
+      elencoTemi: ['Light', 'Dark'],
+      temaSelezionato: 'dark',
+      linguaAppSelezionata: 'Italiano',
+      elencoLingueApp: ['Italiano', 'English']
     }
   },
   computed: {
@@ -54,7 +85,8 @@ export default {
       getPosizioniDecimali: 'getPosizioniDecimali'
     }),
     ...mapGetters('impostazioni', {
-      getDarkTheme: 'darkTheme'
+      getDarkTheme: 'darkTheme',
+      getLinguaApp: 'linguaApp'
     })
   },
   methods: {
@@ -63,25 +95,32 @@ export default {
       cambiaNumeroDecimali: 'cambiaNumeroDecimali'
     }),
     ...mapMutations('impostazioni', {
-      cambiaTema: 'cambiaTema'
+      cambiaTema: 'cambiaTema',
+      cambiaLingua: 'cambiaLingua'
     }),
     aggiornaFormatoNumero () {
-      this.cambiaFormatoNumero(this.linguaSelezionata)
-      impostazioni.set('settings.formatNumber', this.linguaSelezionata)
+      this.cambiaFormatoNumero(this.formatoNumeroSelezionato)
+      impostazioni.set('settings.formatNumber', this.formatoNumeroSelezionato)
     },
     aggiornaPosizioniDecimali () {
       this.cambiaNumeroDecimali(this.posizioniDecimali)
       impostazioni.set('settings.decimalPlaces', this.posizioniDecimali)
     },
     aggiornaTema () {
-      this.cambiaTema(this.temaSelezionato === 'dark')
-      impostazioni.set('settings.temaDark', this.temaSelezionato === 'dark')
+      this.cambiaTema(this.temaSelezionato === 'Dark')
+      impostazioni.set('settings.temaDark', this.temaSelezionato === 'Dark')
+    },
+    aggiornaLinguaApp () {
+      this.cambiaLingua(this.linguaAppSelezionata)
+      impostazioni.set('settings.linguaApp', this.linguaAppSelezionata)
+      this.$inter.setCurrentLocale(this.linguaAppSelezionata)
     }
   },
   mounted () {
     this.posizioniDecimali = this.getPosizioniDecimali
-    this.linguaSelezionata = this.getFormatoNumero
-    this.temaSelezionato = this.getDarkTheme ? 'dark' : 'light'
+    this.formatoNumeroSelezionato = this.getFormatoNumero
+    this.linguaAppSelezionata = this.getLinguaApp
+    this.temaSelezionato = this.getDarkTheme ? 'Dark' : 'Light'
   }
 }
 </script>

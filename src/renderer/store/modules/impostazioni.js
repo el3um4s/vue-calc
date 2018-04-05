@@ -1,6 +1,7 @@
 const state = {
   dark: false,
-  version: '0.18.04.04'
+  version: '0.18.04.04',
+  linguaApp: 'Italiano'
 }
 
 const getters = {
@@ -9,12 +10,18 @@ const getters = {
   },
   darkTheme (state) {
     return state.dark
+  },
+  linguaApp (state) {
+    return state.linguaApp
   }
 }
 
 const mutations = {
   cambiaTema (state, payload) {
     state.dark = payload
+  },
+  cambiaLingua (state, payload) {
+    state.linguaApp = payload
   }
 }
 

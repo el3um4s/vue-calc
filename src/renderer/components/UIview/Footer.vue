@@ -1,6 +1,6 @@
 <template>
 <v-footer class="pa-3" app>
-  <div>versione {{ versionNumber }}</div>
+  <div>v.{{ versionNumber }}</div>
   <v-spacer></v-spacer>
   <div>&copy; {{ new Date().getFullYear() }}</div>
 </v-footer>
