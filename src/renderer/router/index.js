@@ -19,11 +19,6 @@ export default new Router({
       redirect: '/simple'
     },
     {
-      path: '/date',
-      name: 'date',
-      component: require('@/components/CalcDateView').default
-    },
-    {
       path: '/settings',
       name: 'settings',
       component: require('@/components/SettingsView').default

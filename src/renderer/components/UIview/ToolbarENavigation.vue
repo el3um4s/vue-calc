@@ -32,19 +32,32 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 const remote = require('electron').remote
 
 export default {
   data () {
     return {
-      drawer: false
+      drawer: false,
+      items: [
+        { title: 'Standard',
+          icon: 'mdi-calculator',
+          to: 'simple'
+        },
+        {
+          divider: true
+        },
+        {
+          title: 'Settings',
+          icon: 'mdi-settings',
+          to: 'settings'
+        },
+        {
+          title: 'Info',
+          icon: 'mdi-information-variant',
+          to: 'informazioni'
+        }
+      ]
     }
-  },
-  computed: {
-    ...mapGetters('menu', {
-      items: 'menuItems'
-    })
   },
   methods: {
     minimizza () {

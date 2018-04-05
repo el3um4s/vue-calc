@@ -37,13 +37,6 @@
 import { mapGetters, mapMutations } from 'vuex'
 const Impostazioni = require('electron-store')
 const impostazioni = new Impostazioni()
-// const impostazioni = new Impostazioni({
-//   name: 'impostazioni',
-//   defaults: {
-//     windowBounds: { width: 340, height: 550 },
-//     settings: { temaDark: 'dark', formatNumber: 'it-IT', decimalPlaces: 5 }
-//   }
-// })
 
 export default {
   data () {
@@ -52,7 +45,7 @@ export default {
       linguaSelezionata: 'it-IT',
       elencoLingue: ['it-IT', 'it-CH', 'en-GB', 'en-US', 'fr-FR', 'fr-CA', 'de-DE', 'pt-PT', 'pt-BR', 'es-ES'],
       elencoTemi: ['light', 'dark'],
-      temaSelezionato: 'light'
+      temaSelezionato: 'dark'
     }
   },
   computed: {
@@ -60,7 +53,7 @@ export default {
       getFormatoNumero: 'getFormatoNumero',
       getPosizioniDecimali: 'getPosizioniDecimali'
     }),
-    ...mapGetters('menu', {
+    ...mapGetters('impostazioni', {
       getDarkTheme: 'darkTheme'
     })
   },
@@ -69,7 +62,7 @@ export default {
       cambiaFormatoNumero: 'cambiaFormatoNumero',
       cambiaNumeroDecimali: 'cambiaNumeroDecimali'
     }),
-    ...mapMutations('menu', {
+    ...mapMutations('impostazioni', {
       cambiaTema: 'cambiaTema'
     }),
     aggiornaFormatoNumero () {

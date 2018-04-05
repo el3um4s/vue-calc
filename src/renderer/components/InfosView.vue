@@ -43,7 +43,7 @@ const { shell } = require('electron')
 
 export default {
   computed: {
-    ...mapGetters('menu', {
+    ...mapGetters('impostazioni', {
       versionNumber: 'versionNumber'
     })
   },
