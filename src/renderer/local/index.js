@@ -13,7 +13,7 @@ export default new Inter({
         informazioni: 'Info'
       },
       impostazioni: {
-        formato: 'Formato',
+        formato: 'Format',
         posizioniDecimali: 'Decimal Places',
         tema: 'Theme',
         lingua: 'Language'

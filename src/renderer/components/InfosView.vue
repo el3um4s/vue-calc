@@ -6,9 +6,9 @@
         <br />
         <span class="subheading">A Simple VueJS's Calculator</span>
         <br /><br />
-        <span class="body-1">version <strong>{{ versionNumber }}</strong></span>
+        <span class="body-1">Version <strong>{{ versionNumber }}</strong></span>
         <br />
-        <span class="body-1">license <strong>MIT</strong>  &copy; 2017-{{ new Date().getFullYear() }} - Samuele de Tomasi</span>
+        <span class="body-1">License <strong>MIT</strong>  &copy; 2017-{{ new Date().getFullYear() }} - Samuele de Tomasi</span>
       </v-card-text>
     </v-card>
     <v-card>

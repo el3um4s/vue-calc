@@ -6,7 +6,7 @@ const Impostazioni = require('electron-store')
 const impostazioni = new Impostazioni({
   defaults: {
     windowBounds: { width: 340, height: 550 },
-    settings: { temaDark: 'Dark', formatNumber: 'it-IT', decimalPlaces: 5, linguaApp: 'Italiano' }
+    settings: { temaDark: true, formatNumber: 'it-IT', decimalPlaces: 5, linguaApp: 'Italiano' }
   }
 })
 
