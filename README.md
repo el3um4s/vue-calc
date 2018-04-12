@@ -7,7 +7,7 @@ Last Releases: [link](https://github.com/el3um4s/vue-calc/releases)
   - [Portable Windows 32bit](https://github.com/el3um4s/vue-calc/releases/download/v0.18.04.06-beta/vue-calc-32bit.exe)
   - [Portable Windows 64bit](https://github.com/el3um4s/vue-calc/releases/download/v0.18.04.06-beta/vue-calc-64bit.exe)
 
-![screenshot](https://raw.githubusercontent.com/el3um4s/vue-calc/master/altro/screenshot.jpg)
+![screenshot](https://raw.githubusercontent.com/el3um4s/vue-calc/master/altro/screenshot.JPG)
 
 **Version** 0.18.04.06
 
