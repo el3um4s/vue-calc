@@ -1,25 +1,27 @@
-# vue-calc
+# Vue Calc
 
-> An electron-vue project
+> A Simple VueJS's Calculator built with ElectronJS
 
-#### Build Setup
+Last Releases: [link](https://github.com/el3um4s/vue-calc/releases)
+  - [Linux (.appimage)](https://github.com/el3um4s/vue-calc/releases/download/v0.18.04.06-beta/vue-calc-0.18.0-4.6-x86_64.AppImage)
+  - [Portable Windows 32bit](https://github.com/el3um4s/vue-calc/releases/download/v0.18.04.06-beta/vue-calc-32bit.exe)
+  - [Portable Windows 64bit](https://github.com/el3um4s/vue-calc/releases/download/v0.18.04.06-beta/vue-calc-64bit.exe)
 
-``` bash
-# install dependencies
-npm install
+![screenshot](https://raw.githubusercontent.com/el3um4s/vue-calc/master/altro/screenshot.JPG)
 
-# serve with hot reload at localhost:9080
-npm run dev
+**Version** 0.18.04.06
 
-# build electron application for production
-npm run build
+**License** MIT © 2017-2018 - Samuele de Tomasi
 
+**GitHub** [el3um4s/vue-calc](https://github.com/el3um4s/vue-calc/)
 
-# lint all JS/Vue component files in `src/`
-npm run lint
-
-```
-
----
-
-This project was generated with [electron-vue](https://github.com/SimulatedGREG/electron-vue) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).
+**Created with:**
+  - Vue.js
+  - Vuetify
+  - Electron-vue
+  - decimal.js
+  - Google Font Roboto
+  - Google Font Mina
+  - vue-shortkey
+  - electron-store
+  
