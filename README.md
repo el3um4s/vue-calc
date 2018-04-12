@@ -2,12 +2,12 @@
 
 > A Simple VueJS's Calculator built with ElectronJS
 
-![screenshot](https://raw.githubusercontent.com/el3um4s/vue-calc/master/altro/screenshot.JPG)
-
 **Last Releases** [link](https://github.com/el3um4s/vue-calc/releases)
   - [Linux (.appimage)](https://github.com/el3um4s/vue-calc/releases/download/v0.18.04.06-beta/vue-calc-0.18.0-4.6-x86_64.AppImage)
   - [Portable Windows 32bit](https://github.com/el3um4s/vue-calc/releases/download/v0.18.04.06-beta/vue-calc-32bit.exe)
   - [Portable Windows 64bit](https://github.com/el3um4s/vue-calc/releases/download/v0.18.04.06-beta/vue-calc-64bit.exe)
+
+![screenshot](https://raw.githubusercontent.com/el3um4s/vue-calc/master/altro/screenshot.JPG)
 
 **Version** 0.18.04.06
 
