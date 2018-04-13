@@ -38,7 +38,8 @@ export default {
     }),
     ...mapMutations('impostazioni', {
       cambiaTema: 'cambiaTema',
-      cambiaLingua: 'cambiaLingua'
+      cambiaLingua: 'cambiaLingua',
+      cambiaLinguaSistema: 'cambiaLinguaSistema'
     })
   },
   mounted () {
@@ -46,6 +47,7 @@ export default {
     this.cambiaNumeroDecimali(impostazioni.get('settings.decimalPlaces'))
     this.cambiaTema(impostazioni.get('settings.temaDark'))
     this.cambiaLingua(impostazioni.get('settings.linguaApp'))
+    this.cambiaLinguaSistema(impostazioni.get('sistema.lang'))
     this.$inter.setCurrentLocale(impostazioni.get('settings.linguaApp'))
   }
 }

@@ -6,7 +6,8 @@ const Impostazioni = require('electron-store')
 const impostazioni = new Impostazioni({
   defaults: {
     windowBounds: { width: 340, height: 550 },
-    settings: { temaDark: true, formatNumber: 'it-IT', decimalPlaces: 5, linguaApp: 'Italiano' }
+    settings: { temaDark: true, formatNumber: 'it-IT', decimalPlaces: 5, linguaApp: 'Italiano' },
+    sistema: { lang: 'it-IT' }
   }
 })
 
@@ -50,7 +51,23 @@ function createWindow () {
   })
 }
 
-app.on('ready', createWindow)
+app.on('ready', () => {
+  console.log('prova2: ' + app.getLocale())
+  const langLocale = app.getLocale()
+  const linguaAppLocale = langLocale !== 'it' && langLocale !== 'it-IT' && langLocale !== 'it-CH' ? 'English' : 'Italiano'
+  // impostazioni.setDefaults({
+  //   windowBounds: { width: 340, height: 550 },
+  //   settings: { temaDark: true, formatNumber: langLocale, decimalPlaces: 5, linguaApp: linguaAppLocale },
+  //   sistema: { lang: langLocale }
+  // })
+
+  if (!impostazioni.has('settings.formatNumber')) { impostazioni.set('settings.formatNumber', langLocale) }
+  if (!impostazioni.has('settings.linguaApp')) { impostazioni.set('settings.linguaApp', linguaAppLocale) }
+  if (!impostazioni.has('sistema.lang')) { impostazioni.set('settings.linguaApp', langLocale) }
+
+  console.log('asa')
+  createWindow()
+})
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
