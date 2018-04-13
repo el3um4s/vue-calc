@@ -3,11 +3,18 @@
 import { app, BrowserWindow } from 'electron'
 
 const Impostazioni = require('electron-store')
+// const impostazioni = new Impostazioni({
+//   defaults: {
+//     windowBounds: { width: 340, height: 550 },
+//     settings: { temaDark: true, formatNumber: 'en-US', decimalPlaces: 5, linguaApp: 'English' },
+//     sistema: { lang: 'en-US' }
+//   }
+// })
 const impostazioni = new Impostazioni({
   defaults: {
     windowBounds: { width: 340, height: 550 },
-    settings: { temaDark: true, formatNumber: 'it-IT', decimalPlaces: 5, linguaApp: 'Italiano' },
-    sistema: { lang: 'it-IT' }
+    settings: { temaDark: true, formatNumber: 'zzz', decimalPlaces: 5, linguaApp: 'zzz' },
+    sistema: { lang: 'zzz' }
   }
 })
 
@@ -52,20 +59,13 @@ function createWindow () {
 }
 
 app.on('ready', () => {
-  console.log('prova2: ' + app.getLocale())
   const langLocale = app.getLocale()
-  const linguaAppLocale = langLocale !== 'it' && langLocale !== 'it-IT' && langLocale !== 'it-CH' ? 'English' : 'Italiano'
-  // impostazioni.setDefaults({
-  //   windowBounds: { width: 340, height: 550 },
-  //   settings: { temaDark: true, formatNumber: langLocale, decimalPlaces: 5, linguaApp: linguaAppLocale },
-  //   sistema: { lang: langLocale }
-  // })
+  const linguaAppLocale = langLocale === 'it' | langLocale === 'it-IT' | langLocale === 'it-CH' ? 'Italiano' : 'English'
 
-  if (!impostazioni.has('settings.formatNumber')) { impostazioni.set('settings.formatNumber', langLocale) }
-  if (!impostazioni.has('settings.linguaApp')) { impostazioni.set('settings.linguaApp', linguaAppLocale) }
-  if (!impostazioni.has('sistema.lang')) { impostazioni.set('settings.linguaApp', langLocale) }
+  if (impostazioni.get('settings.formatNumber') === 'zzz') { impostazioni.set('settings.formatNumber', langLocale) }
+  if (impostazioni.get('settings.linguaApp') === 'zzz') { impostazioni.set('settings.linguaApp', linguaAppLocale) }
+  if (impostazioni.get('sistema.lang') === 'zzz') { impostazioni.set('sistema.lang', langLocale) }
 
-  console.log('asa')
   createWindow()
 })
 
