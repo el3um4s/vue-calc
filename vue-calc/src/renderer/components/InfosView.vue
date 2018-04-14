@@ -1,6 +1,6 @@
 <template>
   <v-container class="infosview">
-    <v-card>
+    <v-card class="card">
       <v-card-text>
         <span class="title">Vue Calc</span>
         <br />
@@ -8,15 +8,15 @@
         <br /><br />
         <span class="body-1">Version <strong>{{ versionNumber }}</strong></span>
         <br />
-        <span class="body-1">License <strong>MIT</strong>  &copy; 2017-{{ new Date().getFullYear() }} - Samuele de Tomasi</span>
+        <span class="body-1">License <strong>MIT</strong>  &copy; {{ new Date().getFullYear() }} - Samuele de Tomasi</span>
       </v-card-text>
     </v-card>
-    <v-card>
+    <v-card class="card">
       <v-card-text>
         <span class="body-1"><strong>GitHub</strong>: <span class="openLink" @click.prevent="openLink('https://github.com/el3um4s/vue-calc')">el3um4s/vue-calc</span></span>
       </v-card-text>
     </v-card>
-    <v-card>
+    <v-card class="card">
       <v-card-text>
         <span class="body-1"><strong>Created with:</strong></span>
         <div class="elenco">
@@ -29,6 +29,11 @@
           <li class="itemInElenco openLink" @click.prevent="openLink('https://github.com/iFgR/vue-shortkey')">vue-shortkey</li>
           <li class="itemInElenco openLink" @click.prevent="openLink('https://github.com/sindresorhus/electron-store')">electron-store</li>
         </div>
+      </v-card-text>
+    </v-card>
+    <v-card class="card">
+      <v-card-text>
+        <span class="body-1"><strong>Icon</strong>: created by <span class="openLink" @click.prevent="openLink('https://twitter.com/arslanshn')">Arslan Şahìn </span></span>
       </v-card-text>
     </v-card>
   </v-container>
@@ -62,5 +67,8 @@ export default {
   }
   .itemInElenco {
     padding-left: 16px;
+  }
+  .infosview {
+    margin-top: -8px;
   }
 </style>
