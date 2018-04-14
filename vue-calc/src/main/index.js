@@ -1,15 +1,9 @@
 'use strict'
 
 import { app, BrowserWindow } from 'electron'
+const path = require('path')
 
 const Impostazioni = require('electron-store')
-// const impostazioni = new Impostazioni({
-//   defaults: {
-//     windowBounds: { width: 340, height: 550 },
-//     settings: { temaDark: true, formatNumber: 'en-US', decimalPlaces: 5, linguaApp: 'English' },
-//     sistema: { lang: 'en-US' }
-//   }
-// })
 const impostazioni = new Impostazioni({
   defaults: {
     windowBounds: { width: 340, height: 550 },
@@ -43,7 +37,8 @@ function createWindow () {
     minHeight: 550,
     // useContentSize: true,
     minWidth: 340,
-    frame: false
+    frame: false,
+    icon: path.join(__static, '64x64.png')
   })
 
   mainWindow.loadURL(winURL)
@@ -61,7 +56,6 @@ function createWindow () {
 app.on('ready', () => {
   const langLocale = app.getLocale()
   const linguaAppLocale = langLocale === 'it' | langLocale === 'it-IT' | langLocale === 'it-CH' ? 'Italiano' : 'English'
-
   if (impostazioni.get('settings.formatNumber') === 'zzz') { impostazioni.set('settings.formatNumber', langLocale) }
   if (impostazioni.get('settings.linguaApp') === 'zzz') { impostazioni.set('settings.linguaApp', linguaAppLocale) }
   if (impostazioni.get('sistema.lang') === 'zzz') { impostazioni.set('sistema.lang', langLocale) }
