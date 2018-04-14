@@ -1,6 +1,6 @@
 const state = {
   dark: false,
-  version: '0.18.04.13',
+  version: '0.18.04.15',
   linguaApp: 'English',
   linguaSistema: 'en'
 }

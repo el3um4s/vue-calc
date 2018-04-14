@@ -1,7 +1,7 @@
 'use strict'
 
 import { app, BrowserWindow } from 'electron'
-const path = require('path')
+// const path = require('path')
 
 const Impostazioni = require('electron-store')
 const impostazioni = new Impostazioni({
@@ -37,8 +37,8 @@ function createWindow () {
     minHeight: 550,
     // useContentSize: true,
     minWidth: 340,
-    frame: false,
-    icon: path.join(__static, '64x64.png')
+    // icon: path.join(__static, '64x64.png'),
+    frame: false
   })
 
   mainWindow.loadURL(winURL)
