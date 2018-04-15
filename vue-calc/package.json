@@ -1,8 +1,9 @@
 {
   "name": "vue-calc",
-  "version": "0.18.04.06",
+  "version": "0.18.04.15",
   "author": "el3um4s <el3um4s@gmail.com>",
-  "description": "An electron-vue project",
+  "description": "A Simple VueJS's Calculator built with ElectronJS",
+  "repository": "https://github.com/el3um4s/vue-calc",
   "license": "MIT",
   "main": "./dist/electron/main.js",
   "scripts": {
@@ -55,7 +56,7 @@
       "icon": "build/icons/icon.ico"
     },
     "linux": {
-      "icon": "build/icons/512x512.png"
+      "icon": "build/icons"
     }
   },
   "dependencies": {

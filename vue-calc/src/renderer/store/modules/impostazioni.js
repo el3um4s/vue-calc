@@ -1,7 +1,8 @@
 const state = {
   dark: false,
-  version: '0.18.04.06',
-  linguaApp: 'Italiano'
+  version: '0.18.04.15',
+  linguaApp: 'English',
+  linguaSistema: 'en'
 }
 
 const getters = {
@@ -13,6 +14,9 @@ const getters = {
   },
   linguaApp (state) {
     return state.linguaApp
+  },
+  linguaSistema (state) {
+    return state.linguaSistema
   }
 }
 
@@ -22,6 +26,9 @@ const mutations = {
   },
   cambiaLingua (state, payload) {
     state.linguaApp = payload
+  },
+  cambiaLinguaSistema (state, payload) {
+    state.linguaSistema = payload
   }
 }
 

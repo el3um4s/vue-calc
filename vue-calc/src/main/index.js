@@ -1,12 +1,14 @@
 'use strict'
 
 import { app, BrowserWindow } from 'electron'
+// const path = require('path')
 
 const Impostazioni = require('electron-store')
 const impostazioni = new Impostazioni({
   defaults: {
     windowBounds: { width: 340, height: 550 },
-    settings: { temaDark: true, formatNumber: 'it-IT', decimalPlaces: 5, linguaApp: 'Italiano' }
+    settings: { temaDark: true, formatNumber: 'zzz', decimalPlaces: 5, linguaApp: 'zzz' },
+    sistema: { lang: 'zzz' }
   }
 })
 
@@ -35,6 +37,7 @@ function createWindow () {
     minHeight: 550,
     // useContentSize: true,
     minWidth: 340,
+    // icon: path.join(__static, '64x64.png'),
     frame: false
   })
 
@@ -50,7 +53,15 @@ function createWindow () {
   })
 }
 
-app.on('ready', createWindow)
+app.on('ready', () => {
+  const langLocale = app.getLocale()
+  const linguaAppLocale = langLocale === 'it' | langLocale === 'it-IT' | langLocale === 'it-CH' ? 'Italiano' : 'English'
+  if (impostazioni.get('settings.formatNumber') === 'zzz') { impostazioni.set('settings.formatNumber', langLocale) }
+  if (impostazioni.get('settings.linguaApp') === 'zzz') { impostazioni.set('settings.linguaApp', linguaAppLocale) }
+  if (impostazioni.get('sistema.lang') === 'zzz') { impostazioni.set('sistema.lang', langLocale) }
+
+  createWindow()
+})
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

@@ -72,7 +72,7 @@ export default {
     return {
       posizioniDecimali: 0,
       formatoNumeroSelezionato: 'it-IT',
-      elencoFormatoDeiNumeri: ['it-IT', 'it-CH', 'en-GB', 'en-US', 'fr-FR', 'fr-CA', 'de-DE', 'pt-PT', 'pt-BR', 'es-ES'],
+      elencoFormatoDeiNumeri: [],
       elencoTemi: ['Light', 'Dark'],
       temaSelezionato: 'dark',
       linguaAppSelezionata: 'Italiano',
@@ -86,7 +86,8 @@ export default {
     }),
     ...mapGetters('impostazioni', {
       getDarkTheme: 'darkTheme',
-      getLinguaApp: 'linguaApp'
+      getLinguaApp: 'linguaApp',
+      getLinguaSistema: 'linguaSistema'
     })
   },
   methods: {
@@ -121,6 +122,9 @@ export default {
     this.formatoNumeroSelezionato = this.getFormatoNumero
     this.linguaAppSelezionata = this.getLinguaApp
     this.temaSelezionato = this.getDarkTheme ? 'Dark' : 'Light'
+  },
+  created () {
+    this.elencoFormatoDeiNumeri = ['it-IT', 'it-CH', 'en-GB', 'en-US', 'fr-FR', 'fr-CA', 'de-DE', 'pt-PT', 'pt-BR', 'es-ES', this.getLinguaSistema].filter(function (value, index, array) { return array.indexOf(value) === index })
   }
 }
 </script>
