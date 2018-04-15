@@ -33,7 +33,7 @@
     </v-card>
     <v-card class="card">
       <v-card-text>
-        <span class="body-1"><strong>Icon</strong>: created by <span class="openLink" @click.prevent="openLink('https://twitter.com/arslanshn')">Arslan Şahìn </span></span>
+        <span class="body-1"><strong>Icon</strong>: created by <span class="openLink" @click.prevent="openLink('https://twitter.com/arslansahin')">Arslan Şahìn </span></span>
       </v-card-text>
     </v-card>
   </v-container>
