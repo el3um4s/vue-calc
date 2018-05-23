@@ -27,3 +27,11 @@
   - electron-store
   
 **Icons** created by [Arslan Şahìn](https://twitter.com/arslansahin)
+
+**Note about Calculator Logic:** It should be noted that there are two main schools of thought on calculator input logic: immediate execution logic and formula logic. Formula logic observes order of operation precedence, immediate execution does not. **Vue Calc utilizes immediate execution logic**.
+
+Either is acceptable, but please note that depending on which you choose, your calculator may yield different results than ours for certain equations (see below example)
+
+`3 + 5 x 6 - 2 / 4 =`
+ * Immediate Execution Logic: 11.5
+ * Formula/Expression Logic: 32.5
